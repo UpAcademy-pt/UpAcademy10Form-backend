@@ -15,8 +15,6 @@ public class Entity_ implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 	
-	
-
 	public Long getId() {
 		return id;
 	}
