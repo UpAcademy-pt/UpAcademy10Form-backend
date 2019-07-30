@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 @Path("users")
-public class UserServices {
+public class EmployeeServices {
 	
 	@Context
 	private UriInfo context;
