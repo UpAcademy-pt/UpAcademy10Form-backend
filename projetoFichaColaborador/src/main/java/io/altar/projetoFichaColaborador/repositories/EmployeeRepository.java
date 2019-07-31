@@ -13,4 +13,10 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		return Employee.class;
 	}
 
+	@Override
+	protected String getAllQuery() {
+		
+		return null;
+	}
+
 }

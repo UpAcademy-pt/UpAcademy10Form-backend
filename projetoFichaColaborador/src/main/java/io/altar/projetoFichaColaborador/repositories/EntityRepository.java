@@ -1,7 +1,10 @@
 package io.altar.projetoFichaColaborador.repositories;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import io.altar.projetoFichaColaborador.models.Entity_;
@@ -13,6 +16,9 @@ public abstract class EntityRepository<T extends Entity_> {
 
 	@PersistenceContext(unitName = "database")
 	protected EntityManager em;
+	
+	protected abstract Class<T> getEntityClass();
+	protected abstract String getAllQuery();
 	
 	public T addEntity(T entity) {
 		return em.merge(entity);
@@ -30,7 +36,11 @@ public abstract class EntityRepository<T extends Entity_> {
 	public void editEntity(T entity) {
 		em.merge(entity);
 	}
-
-	protected abstract Class<T> getEntityClass();
+	
+	public List<T> getAll() {
+		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
+		List<T> emp = query.getResultList();
+		return emp;
+	}
 
 }
