@@ -39,8 +39,7 @@ public abstract class EntityRepository<T extends Entity_> {
 	
 	public List<T> getAll() {
 		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
-		List<T> emp = query.getResultList();
-		return emp;
+		return query.getResultList();
 	}
 
 }
