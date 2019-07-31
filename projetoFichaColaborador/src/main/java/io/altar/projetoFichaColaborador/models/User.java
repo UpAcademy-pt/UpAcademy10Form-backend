@@ -1,5 +1,7 @@
 package io.altar.projetoFichaColaborador.models;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -17,6 +19,8 @@ public class User extends Entity_ {
 	private String username;
 	private int password;
 	private String role;
+	private Date created;
+	private Date modified;
 
 	public String getUsername() {
 		return username;
