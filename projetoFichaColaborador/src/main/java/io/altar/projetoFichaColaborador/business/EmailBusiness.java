@@ -1,40 +1,44 @@
-package io.altar.projetoFichaColaborador.services;
+package io.altar.projetoFichaColaborador.business;
 
-import com.sun.mail.smtp.SMTPTransport;
-
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.annotation.Resource;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
-public class EmailServices {
+import com.sun.mail.smtp.SMTPTransport;
+
+public class EmailBusiness {
 	
 	// for example, smtp.mailgun.org
-    private static final String SMTP_SERVER = "smtp server ";
-    private static final String USERNAME = "";
-    private static final String PASSWORD = "";
+    private static final String SMTP_SERVER = "smtp.mailgun.org";
+    private static final String USERNAME = "postmaster@sandbox429ef89083f042179b66d633cac87500.mailgun.org";
+    private static final String PASSWORD = "d83cd3bcb57987ac07a6b4d6c14b258b-f877bd7a-4a9f6ffa";
 
-    private static final String EMAIL_FROM = "newcolaborador@gmail.com\n";
-    private static final String EMAIL_TO = "email_1@yahoo.com, email_2@gmail.com";
+    private static final String EMAIL_FROM = "newcolaborador@gmail.com";
+    private static final String EMAIL_TO = "cepobu@tmailcloud.net";
+    //fazer query para inserir o email a eviar
     private static final String EMAIL_TO_CC = "";
 
-    private static final String EMAIL_SUBJECT = "Test Send Email via SMTP (HTML)";
-    private static final String EMAIL_TEXT = "<h1>Hello Java Mail \n ABC123</h1>";
+    private static final String EMAIL_SUBJECT = "Ficha de Colaborador Aubay";
+    private static final String EMAIL_TEXT = "<h1>Muito Boa Tarde,</h1><br><h1>Em anexo segue o link para o preenchimento da ficha de colaborador</h1><br><h1>***Link para preenchimento da ficha de colaborador***</h1>";
 
-    public static void main(String[] args) {
+    public void sendEmail() {
 
         Properties prop = System.getProperties();
+        prop.put("mail.smtp.host", SMTP_SERVER); //optional, defined in SMTPTransport
+        prop.put("mail.smtp.port", "465"); // default port 25
         prop.put("mail.smtp.auth", "true");
-
+        
         Session session = Session.getInstance(prop, null);
         Message msg = new MimeMessage(session);
 
