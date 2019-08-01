@@ -1,5 +1,6 @@
 package io.altar.projetoFichaColaborador.repositories;
 
+import java.time.Instant;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -22,6 +23,7 @@ public abstract class EntityRepository<T extends Entity_> {
 	protected abstract String getByIdQuery();
 
 	public void create(T entity) {
+		entity.setCreated(Instant.now());
 		em.persist(entity);
 	}
 

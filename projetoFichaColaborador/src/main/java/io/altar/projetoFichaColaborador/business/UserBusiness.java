@@ -24,14 +24,19 @@ public class UserBusiness {
 	}
 
 	public Response updateUser(User user) {
-		if (user.getId() == currentUser.getId() && user.getRole() == "owner") {
-			if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
-				return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
-			} else {
-				eR.update(user);
-				return Response.status(Response.Status.OK).entity(user).build();
+		if (user.getRole() == "owner") {
+			if (user.getId() == currentUser.getId()) {
+				if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
+					return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
+				} else {
+					eR.update(user);
+					return Response.status(Response.Status.OK).entity(user).build();
+				}
 			}
-		} else if (user.getId() == currentUser.getId()) {
+		} else if (user.getId() != currentUser.getId()) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para fazer essas alteracoes")
+					.build();
+		} else {
 			if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
 				return Response.status(Response.Status.FORBIDDEN)
 						.entity("Nao tem permissao para fazer essas alteracoes").build();
@@ -39,10 +44,9 @@ public class UserBusiness {
 				eR.update(user);
 				return Response.status(Response.Status.OK).entity(user).build();
 			}
-		} else {
-			return Response.status(Response.Status.UNAUTHORIZED)
-					.entity("Nao tem permissoes para efetuar essas alteracoes").build();
 		}
+		return null;
+
 	}
 
 	public Response getUserLogin(Credentials userCredentials) {
