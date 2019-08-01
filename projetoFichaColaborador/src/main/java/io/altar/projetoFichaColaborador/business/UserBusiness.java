@@ -16,10 +16,57 @@ public class UserBusiness {
 	private EntityRepository<User> eR;
 	@Inject
 	private UserRepository uR;
-	
-	public static Credentials currentUser;
 
-	public Response businessGetAllUsers() {
+	public static User currentUser;
+
+	public void createUser(User user) {
+		eR.create(user);
+	}
+
+	public Response updateUser(User user) {
+		if (user.getId() == currentUser.getId() && user.getRole() == "owner") {
+			if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
+				return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
+			} else {
+				eR.update(user);
+				return Response.status(Response.Status.OK).entity(user).build();
+			}
+		} else if (user.getId() == currentUser.getId()) {
+			if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
+				return Response.status(Response.Status.FORBIDDEN)
+						.entity("Nao tem permissao para fazer essas alteracoes").build();
+			} else {
+				eR.update(user);
+				return Response.status(Response.Status.OK).entity(user).build();
+			}
+		} else {
+			return Response.status(Response.Status.UNAUTHORIZED)
+					.entity("Nao tem permissoes para efetuar essas alteracoes").build();
+		}
+	}
+
+	public Response getUserLogin(Credentials userCredentials) {
+		User logedUserTry = uR.getUserFromCredentials(userCredentials);
+
+		if (logedUserTry.getId() != null) {
+			currentUser = logedUserTry;
+			return Response.accepted().entity(logedUserTry).build();
+		} else {
+			return Response.status(Response.Status.NO_CONTENT).entity("Username e/ou Password incorrectos").build();
+		}
+	}
+
+	public Response getUserById(long id) {
+		User user = eR.getEntityById(id);
+
+		if (user.getId() != null) {
+			return Response.accepted().entity(user).build();
+		} else {
+			return Response.status(Response.Status.NO_CONTENT).entity("Esse utilizador nao existe").build();
+		}
+	}
+
+	public Response getAllUsers() {
 		List<User> tempAllUsers = eR.getAll();
 
 		if (tempAllUsers != null) {
@@ -27,32 +74,6 @@ public class UserBusiness {
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).build();
 		}
-	}
-
-	public Response userLogin(Credentials userCredentials) {
-		User logedUserTry = uR.getUserFromCredentials(userCredentials);
-
-		if (logedUserTry.getId() != null) {
-			currentUser = userCredentials;
-			return Response.accepted().entity(logedUserTry).build();
-		} else {
-			return Response.status(Response.Status.NO_CONTENT).entity("Username e/ou Password incorrectos").build();
-		}
-	}
-
-	public void createUser(User user) {
-		eR.create(user);
-	}
-
-	public Response updateUser(User user) {
-		
-		if (user.getId() != null) {
-			
-			
-		}
-		eR.update(user);
-		return Response.status(Response.Status.NOT_FOUND).entity("Este nao existe").build();
-		
 	}
 
 }

@@ -22,17 +22,15 @@ public class UserRepository extends EntityRepository<User> {
 	protected String getUserLoginQuery() {
 		return User.GET_USER_LOGIN;
 	}
+	@Override
+	protected String getByIdQuery() {
+		return User.GET_USER_BY_ID;
+	}
 	
 	public User getUserFromCredentials(Credentials userCredentials) {
 		TypedQuery<User> query = em.createNamedQuery(getUserLoginQuery(), User.class);
 		query.setParameter("username", userCredentials.getUsername());
 		query.setParameter("password", userCredentials.getPassword());
 		return query.getSingleResult();
-	}
-
-	@Override
-	public void update(User user) {
-		// TODO Auto-generated method stub
-		
 	}
 }

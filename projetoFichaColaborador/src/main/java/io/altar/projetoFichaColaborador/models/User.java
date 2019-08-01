@@ -8,13 +8,15 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({ @NamedQuery(name = "GET_ALL_USERS", query = "SELECT u FROM User u"),
-		@NamedQuery(name = "GET_USER_LOGIN", query = "SELECT u  FROM User u WHERE EXISTS(SELECT u.id  FROM User u WHERE u.username =:username AND u.password =:password)") })
+		@NamedQuery(name = "GET_USER_LOGIN", query = "SELECT u  FROM User u WHERE EXISTS(SELECT u.id  FROM User u WHERE u.username =:username AND u.password =:password)"),
+		@NamedQuery(name = "GET_USER_BY_ID", query = "SELECT u  FROM User u WHERE u.id =:userId")})
 
 public class User extends Entity_ {
 
 	private static final long serialVersionUID = 1L;
 	public static final String GET_ALL_USERS = "GET_ALL_USERS";
 	public static final String GET_USER_LOGIN = "GET_USER_LOGIN";
+	public static final String 	GET_USER_BY_ID = "GET_USER_BY_ID";
 
 	private String username;
 	private int password;

@@ -6,6 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -31,11 +32,19 @@ public class UserService {
 	public String healthCheck() {
 		return "URI " + context.getRequestUri().toString() + " is OK!";
 	}
+	
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getUserById(@PathParam("id") long id) {
+		return uB.getUserById(id);
+	}
+
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getAllUsers() {
-		return uB.businessGetAllUsers();
+		return uB.getAllUsers();
 	}
 
 	@PUT
@@ -50,7 +59,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getUserLogin(Credentials userCredential) {
-		return uB.userLogin(userCredential);
+		return uB.getUserLogin(userCredential);
 	}
 
 	@POST
