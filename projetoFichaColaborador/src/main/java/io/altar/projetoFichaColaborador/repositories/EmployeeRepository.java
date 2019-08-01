@@ -2,7 +2,7 @@ package io.altar.projetoFichaColaborador.repositories;
 
 import javax.faces.bean.RequestScoped;
 
-import io.altar.projetoFichaColaborador.models.Employee;
+import io.altar.projetoFichaColaborador.models.Employee;;
 
 
 @RequestScoped
@@ -23,6 +23,12 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		
 		return Employee.GET_ALL_EMPLOYEES;
 		
+	}
+
+	@Override
+	protected String getByIdQuery() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -9,38 +9,42 @@ import javax.transaction.Transactional;
 
 import io.altar.projetoFichaColaborador.models.Entity_;
 
-
-
 @Transactional
 public abstract class EntityRepository<T extends Entity_> {
 
 	@PersistenceContext(unitName = "database")
 	protected EntityManager em;
-	
+
 	protected abstract Class<T> getEntityClass();
+
 	protected abstract String getAllQuery();
-	
-	public T addEntity(T entity) {
-		return em.merge(entity);
+
+	protected abstract String getByIdQuery();
+
+	public void create(T entity) {
+		em.persist(entity);
 	}
 
-	public T getEntity(long id) {
-		return em.find(getEntityClass(), id);
+	public void update(T entity) {
+		em.merge(entity);
 	}
 
 	public void removeEntity(long id) {
 		em.remove(id);
-		
 	}
 
-	public void editEntity(T entity) {
-		em.merge(entity);
+	public T findEntity(long id) {
+		return em.find(getEntityClass(), id);
 	}
-	
+
+	public T getEntityById(long id) {
+		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
+		return query.getSingleResult();
+	}
+
 	public List<T> getAll() {
 		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
-		List<T> emp = query.getResultList();
-		return emp;
+		return query.getResultList();
 	}
 
 }
