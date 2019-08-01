@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import io.altar.projetoFichaColaborador.models.Entity_;
-
 @Entity
 public class Employee extends Entity_{
 	
@@ -43,7 +41,7 @@ public class Employee extends Entity_{
 	private boolean twelfths5050;
 	private boolean twelfths112;
 	private boolean foodAllowance;
-	private String workTine = "9h-18h";
+	private String workSchedule = "9h-18h";
 	private boolean sports;
 	private String sportsType;
 	private String otherActivities;

@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import io.altar.projetoFichaColaborador.models.Entity_;
 
 
-
 @Transactional
 public abstract class EntityRepository<T extends Entity_> {
 
