@@ -1,11 +1,10 @@
 package io.altar.projetoFichaColaborador.services;
 
-
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -15,6 +14,7 @@ import javax.ws.rs.core.UriInfo;
 
 import io.altar.projetoFichaColaborador.business.UserBusiness;
 import io.altar.projetoFichaColaborador.models.Credentials;
+import io.altar.projetoFichaColaborador.models.User;
 
 @Path("user")
 public class UserService {
@@ -23,7 +23,7 @@ public class UserService {
 	private UriInfo context;
 
 	@Inject
-	private UserBusiness ub;
+	private UserBusiness uB;
 
 	@GET
 	@Path("isOk")
@@ -35,15 +35,28 @@ public class UserService {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getAllUsers() {
-		return ub.businessGetAllUsers();
+		return uB.businessGetAllUsers();
 	}
-	
+
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response updateUser(User user) {
+		return uB.updateUser(user);
+	}
+
 	@POST
 	@Path("login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getUserLogin(Credentials userCredential) {
-		return ub.userLogin(userCredential);
+		return uB.userLogin(userCredential);
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void createUser(User user) {
+		uB.createUser(user);
 	}
 
 }

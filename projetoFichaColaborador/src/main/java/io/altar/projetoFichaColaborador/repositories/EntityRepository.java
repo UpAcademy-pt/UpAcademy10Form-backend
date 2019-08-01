@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import io.altar.projetoFichaColaborador.models.Entity_;
+import io.altar.projetoFichaColaborador.models.User;
 
 
 
@@ -19,6 +20,10 @@ public abstract class EntityRepository<T extends Entity_> {
 	
 	protected abstract Class<T> getEntityClass();
 	protected abstract String getAllQuery();
+	
+	public void create(T entity) {
+		em.persist(entity);
+	}
 	
 	public T addEntity(T entity) {
 		return em.merge(entity);
@@ -41,5 +46,8 @@ public abstract class EntityRepository<T extends Entity_> {
 		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
 		return query.getResultList();
 	}
+	public abstract void update(User user);
+	
+
 
 }
