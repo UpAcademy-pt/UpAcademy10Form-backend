@@ -11,7 +11,8 @@ import io.altar.projetoFichaColaborador.models.Entity_;
 @Entity
 @NamedQueries({
 	
-	@NamedQuery(name = "getAllEmployees", query = "SELECT e FROM Employee e")
+	@NamedQuery(name = "getAllEmployees", query = "SELECT e FROM Employee e"),
+	@NamedQuery(name = "getEmpById", query = "SELECT e FROM Employee e WHERE e.id =:employeeId ")
 	
 })
 
@@ -22,7 +23,8 @@ import io.altar.projetoFichaColaborador.models.Entity_;
 public class Employee extends Entity_{
 	
 	private static final long serialVersionUID = 1L;
-	public static final String GET_ALL_EMPLOYEES = "getAllEmployess";
+	public static final String GET_ALL_EMPLOYEES = "getAllEmployees";
+	public static final String GET_EMP_BY_ID = "getEmpById";
 	
 //	private String username;
 //	private String password;

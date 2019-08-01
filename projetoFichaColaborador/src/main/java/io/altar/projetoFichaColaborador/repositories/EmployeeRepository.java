@@ -13,22 +13,21 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		return Employee.class;
 	}
 
+	
+	// Get all registers
 	@Override
 	protected String getAllQuery() {
-		
-		return null;
-	}
-	
-	protected String getAllReg() {
 		
 		return Employee.GET_ALL_EMPLOYEES;
 		
 	}
-
+	
+	
+	// Get register by ID
 	@Override
 	protected String getByIdQuery() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return Employee.GET_EMP_BY_ID;
 	}
 
 }
