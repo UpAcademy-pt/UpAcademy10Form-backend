@@ -13,6 +13,7 @@ public class EmployeeBusiness {
 	@Inject
 	private EntityRepository<Employee> eR;
 	
+	
 	public Response getAllEmployees() {
 		
 		List<Employee> tempAllEmployees = eR.getAll();
@@ -35,6 +36,16 @@ public class EmployeeBusiness {
 		}
 		
 	}
+	
+	
+	public void create(Employee employee) {
+		
+		eR.create(employee);
+		
+	}
+	
+	
+	
 	
 
 }
