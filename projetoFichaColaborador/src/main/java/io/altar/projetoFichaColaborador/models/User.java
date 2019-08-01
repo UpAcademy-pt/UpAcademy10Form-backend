@@ -13,6 +13,9 @@ import javax.persistence.NamedQuery;
 
 public class User extends Entity_ {
 
+	public User() {
+	}
+
 	private static final long serialVersionUID = 1L;
 	public static final String GET_ALL_USERS = "GET_ALL_USERS";
 	public static final String GET_USER_LOGIN = "GET_USER_LOGIN";

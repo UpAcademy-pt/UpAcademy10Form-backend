@@ -25,16 +25,5 @@ public class EmployeeServices {
 	public String healthCheck() {
 		return "URI " + context.getRequestUri().toString() + " is OK!";
 	}
-	
-	@GET
-	@Path("getAllEmployees")
-	@Produces({MediaType.APPLICATION_JSON})
-	public List<Employee> getAll() {
-		
-//		return eb.getAll();
-		return eb.
-		
-	}
-	
 
 }

@@ -76,4 +76,20 @@ public class UserBusiness {
 		}
 	}
 
+	public Response removeUser(long id) {
+		User user = eR.getEntityById(id);
+
+		if (user.getRole() != "owner") {
+			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para eliminar este utilizador")
+					.build();
+
+		} else if (user.getId() == currentUser.getId()) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para eliminar este utilizador")
+					.build();
+		} else {
+			eR.remove(id);
+			return Response.status(Response.Status.OK).entity(user).build();
+		}
+	}
+
 }

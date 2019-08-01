@@ -29,7 +29,7 @@ public abstract class EntityRepository<T extends Entity_> {
 		em.merge(entity);
 	}
 
-	public void removeEntity(long id) {
+	public void remove(long id) {
 		em.remove(id);
 	}
 
@@ -38,7 +38,8 @@ public abstract class EntityRepository<T extends Entity_> {
 	}
 
 	public T getEntityById(long id) {
-		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
+		TypedQuery<T> query = em.createNamedQuery(getByIdQuery(), getEntityClass());
+		query.setParameter("userId", id);
 		return query.getSingleResult();
 	}
 
