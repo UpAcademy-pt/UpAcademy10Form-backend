@@ -18,5 +18,11 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		
 		return null;
 	}
+	
+	protected String getAllReg() {
+		
+		return Employee.GET_ALL_EMPLOYEES;
+		
+	}
 
 }

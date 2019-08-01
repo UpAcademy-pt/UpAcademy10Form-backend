@@ -3,13 +3,26 @@ package io.altar.projetoFichaColaborador.models;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import io.altar.projetoFichaColaborador.models.Entity_;
 
 @Entity
+@NamedQueries({
+	
+	@NamedQuery(name = "getAllEmployees", query = "SELECT e FROM Employee e")
+	
+})
+
+
+//@Entity
+//@NamedQueries({ @NamedQuery(name = "GET_ALL_USERS", query = "SELECT u FROM User u"),
+//		@NamedQuery(name = "GET_USER_LOGIN", query = "SELECT u  FROM User u WHERE EXISTS(SELECT u.id  FROM User u WHERE u.username =:username AND u.password =:password)") })
 public class Employee extends Entity_{
 	
 	private static final long serialVersionUID = 1L;
+	public static final String GET_ALL_EMPLOYEES = "getAllEmployess";
 	
 //	private String username;
 //	private String password;
