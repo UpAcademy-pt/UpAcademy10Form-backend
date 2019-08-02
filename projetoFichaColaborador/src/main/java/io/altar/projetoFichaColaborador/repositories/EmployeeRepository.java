@@ -14,7 +14,7 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 	}
 
 	
-	// Get all registers
+	// Get all entity occurrences
 	@Override
 	protected String getAllQuery() {
 		
@@ -23,7 +23,7 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 	}
 	
 	
-	// Get register by ID
+	// Get entity occurrence by ID
 	@Override
 	protected String getByIdQuery() {
 
