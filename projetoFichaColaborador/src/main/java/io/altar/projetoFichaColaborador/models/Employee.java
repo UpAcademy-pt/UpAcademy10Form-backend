@@ -75,8 +75,6 @@ public class Employee extends Entity_{
 	
 	private String commentarySection;
 	//
-	private Date created;
-	private Date modified;
 		
 	public Employee() {}
 
@@ -358,22 +356,6 @@ public class Employee extends Entity_{
 
 	public void setOtherInterests(String otherInterests) {
 		this.otherInterests = otherInterests;
-	}
-
-	public Date getCreated() {
-		return created;
-	}
-
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
-	public Date getModified() {
-		return modified;
-	}
-
-	public void setModified(Date modified) {
-		this.modified = modified;
 	}
 
 	public String getAcademicInstitution() {
