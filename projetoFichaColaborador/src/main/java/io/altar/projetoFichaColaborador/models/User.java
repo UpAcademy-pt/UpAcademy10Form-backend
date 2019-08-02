@@ -6,7 +6,7 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({ @NamedQuery(name = "GET_ALL_USERS", query = "SELECT u FROM User u"),
-		@NamedQuery(name = "GET_USER_LOGIN", query = "SELECT u  FROM User u WHERE EXISTS(SELECT u.id  FROM User u WHERE u.username =:username AND u.password =:password)"),
+		@NamedQuery(name = "GET_USER_LOGIN", query = "SELECT u  FROM User u WHERE u.username =:username AND u.password =:password"),
 		@NamedQuery(name = "GET_USER_BY_ID", query = "SELECT u  FROM User u WHERE u.id =:userId") })
 
 public class User extends Entity_ {
