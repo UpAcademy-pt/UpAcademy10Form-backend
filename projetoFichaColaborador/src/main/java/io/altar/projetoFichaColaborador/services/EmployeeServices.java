@@ -29,20 +29,14 @@ public class EmployeeServices {
 	public String healthCheck() {
 		return "URI " + context.getRequestUri().toString() + " is OK!";
 	}
-<<<<<<< HEAD
-=======
 	
 	
 	@GET
 	@Path("getAllEmployees")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllEmployees() {
-		
 		return eB.getAllEmployees();
-		
 	}
-	
-	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -51,7 +45,4 @@ public class EmployeeServices {
 		return eB.getEmpById(id);
 		
 	}
-	
->>>>>>> origin/gabriel
-
 }

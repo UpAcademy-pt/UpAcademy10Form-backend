@@ -290,12 +290,12 @@ public class Employee extends Entity_{
 		this.foodAllowance = foodAllowance;
 	}
 
-	public String getWorkTine() {
-		return workTine;
+	public String getWorkSchedule() {
+		return workSchedule;
 	}
 
-	public void setWorkTine(String workTine) {
-		this.workTine = workTine;
+	public void setWorkSchedule(String workTine) {
+		this.workSchedule = workTine;
 	}
 
 	public boolean isSports() {
