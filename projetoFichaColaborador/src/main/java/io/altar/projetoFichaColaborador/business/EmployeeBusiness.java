@@ -38,7 +38,7 @@ public class EmployeeBusiness {
 	}
 	
 	
-	public void create(Employee employee) {
+	public void createEmployee(Employee employee) {
 		
 		eR.create(employee);
 		

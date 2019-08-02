@@ -13,11 +13,6 @@ import javax.persistence.NamedQuery;
 	@NamedQuery(name = "getEmpById", query = "SELECT e FROM Employee e WHERE e.id =:employeeId ")
 	
 })
-
-
-//@Entity
-//@NamedQueries({ @NamedQuery(name = "GET_ALL_USERS", query = "SELECT u FROM User u"),
-//		@NamedQuery(name = "GET_USER_LOGIN", query = "SELECT u  FROM User u WHERE EXISTS(SELECT u.id  FROM User u WHERE u.username =:username AND u.password =:password)") })
 public class Employee extends Entity_{
 	
 	private static final long serialVersionUID = 1L;
@@ -35,6 +30,8 @@ public class Employee extends Entity_{
 	private String email;
 	private int phoneNumber;
 	private String academicQualifications;
+	private String academicInstitution;
+	private String course;
 	private int cc;
 	private Date ccValidity;
 	private String nationality;
@@ -48,6 +45,8 @@ public class Employee extends Entity_{
 	private String iban;
 	private String swift;
 	private String professionalCategory = "Consultor de sistemas de Informação";
+	private String specialTech;
+	private String otherTech;
 	private Date admissionDate; //?
 	private float grossSalary;
 	private String contractType;
@@ -63,6 +62,19 @@ public class Employee extends Entity_{
 	private String suggestedActivities;
 	private String hobbies;
 	private String otherInterests;
+	private String client;
+	private String clientSector;
+	private String project;
+	private String fare;
+	private String healthInsurance;
+	private String companyFinancing;
+	private String extensible;
+	private String insuranceRelativeName;
+	private String insuranceRelativeBirthDate;
+	private String companyFinancingRelative;
+	
+	private String commentarySection;
+	//
 		
 	public Employee() {}
 
@@ -344,5 +356,126 @@ public class Employee extends Entity_{
 
 	public void setOtherInterests(String otherInterests) {
 		this.otherInterests = otherInterests;
-	}		
+	}
+
+	public String getAcademicInstitution() {
+		return academicInstitution;
+	}
+
+	public void setAcademicInstitution(String academicInstitution) {
+		this.academicInstitution = academicInstitution;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	public String getSpecialTech() {
+		return specialTech;
+	}
+
+	public void setSpecialTech(String specialTech) {
+		this.specialTech = specialTech;
+	}
+
+	public String getOtherTech() {
+		return otherTech;
+	}
+
+	public void setOtherTech(String otherTech) {
+		this.otherTech = otherTech;
+	}
+
+	public String getClient() {
+		return client;
+	}
+
+	public void setClient(String client) {
+		this.client = client;
+	}
+
+	public String getClientSector() {
+		return clientSector;
+	}
+
+	public void setClientSector(String clientSector) {
+		this.clientSector = clientSector;
+	}
+
+	public String getProject() {
+		return project;
+	}
+
+	public void setProject(String project) {
+		this.project = project;
+	}
+
+	public String getFare() {
+		return fare;
+	}
+
+	public void setFare(String fare) {
+		this.fare = fare;
+	}
+
+	public String getHealthInsurance() {
+		return healthInsurance;
+	}
+
+	public void setHealthInsurance(String healthInsurance) {
+		this.healthInsurance = healthInsurance;
+	}
+
+	public String getCommentarySection() {
+		return commentarySection;
+	}
+
+	public void setCommentarySection(String commentarySection) {
+		this.commentarySection = commentarySection;
+	}
+
+	public String getInsuranceRelativeName() {
+		return insuranceRelativeName;
+	}
+
+	public void setInsuranceRelativeName(String insuranceRelativeName) {
+		this.insuranceRelativeName = insuranceRelativeName;
+	}
+
+	public String getInsuranceRelativeBirthDate() {
+		return insuranceRelativeBirthDate;
+	}
+
+	public void setInsuranceRelativeBirthDate(String insuranceRelativeBirthDate) {
+		this.insuranceRelativeBirthDate = insuranceRelativeBirthDate;
+	}
+
+	public String getCompanyFinancing() {
+		return companyFinancing;
+	}
+
+	public void setCompanyFinancing(String companyFinancing) {
+		this.companyFinancing = companyFinancing;
+	}
+
+	public String getExtensible() {
+		return extensible;
+	}
+
+	public void setExtensible(String extensible) {
+		this.extensible = extensible;
+	}
+
+	public String getCompanyFinancingRelative() {
+		return companyFinancingRelative;
+	}
+
+	public void setCompanyFinancingRelative(String companyFinancingRelative) {
+		this.companyFinancingRelative = companyFinancingRelative;
+	}
+	
 }
