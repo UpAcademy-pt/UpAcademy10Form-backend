@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.TypedQuery;
+
 import io.altar.projetoFichaColaborador.models.Token;
 
 @RequestScoped
