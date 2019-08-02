@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
-import io.altar.projetoFichaColaborador.models.Entity_;
-
 @Entity
 @NamedQueries({
 	
@@ -57,7 +55,7 @@ public class Employee extends Entity_{
 	private boolean twelfths5050;
 	private boolean twelfths112;
 	private boolean foodAllowance;
-	private String workTine = "9h-18h";
+	private String workSchedule = "9h-18h";
 	private boolean sports;
 	private String sportsType;
 	private String otherActivities;
@@ -306,12 +304,12 @@ public class Employee extends Entity_{
 		this.foodAllowance = foodAllowance;
 	}
 
-	public String getWorkTine() {
-		return workTine;
+	public String getWorkSchedule() {
+		return workSchedule;
 	}
 
-	public void setWorkTine(String workTine) {
-		this.workTine = workTine;
+	public void setWorkSchedule(String workTine) {
+		this.workSchedule = workTine;
 	}
 
 	public boolean isSports() {

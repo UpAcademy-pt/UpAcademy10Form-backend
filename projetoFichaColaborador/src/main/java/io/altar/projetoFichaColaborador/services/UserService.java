@@ -2,6 +2,7 @@ package io.altar.projetoFichaColaborador.services;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -17,7 +18,7 @@ import io.altar.projetoFichaColaborador.business.UserBusiness;
 import io.altar.projetoFichaColaborador.models.Credentials;
 import io.altar.projetoFichaColaborador.models.User;
 
-@Path("user")
+@Path("users")
 public class UserService {
 
 	@Context
@@ -32,17 +33,16 @@ public class UserService {
 	public String healthCheck() {
 		return "URI " + context.getRequestUri().toString() + " is OK!";
 	}
-	
+
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserById(@PathParam("id") long id) {
 		return uB.getUserById(id);
 	}
 
-
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
 		return uB.getAllUsers();
 	}
@@ -66,6 +66,13 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void createUser(User user) {
 		uB.createUser(user);
+	}
+
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response removeUser(@PathParam("id") long id) {
+		return uB.removeUser(id);
 	}
 
 }

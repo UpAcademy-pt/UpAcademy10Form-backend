@@ -38,12 +38,8 @@ public class EmployeeServices {
 	@Path("getAllEmployees")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllEmployees() {
-		
 		return eB.getAllEmployees();
-		
 	}
-	
-	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.TEXT_PLAIN)
