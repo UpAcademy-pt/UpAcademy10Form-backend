@@ -25,17 +25,17 @@ public class UserBusiness {
 
 	public Response updateUser(User user) {
 		if (user.getRole() == "owner") {
-			if (user.getId() == currentUser.getId()) {
+//			if (user.getId() == currentUser.getId()) {
 				if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
 					return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
 				} else {
 					eR.update(user);
 					return Response.status(Response.Status.OK).entity(user).build();
 				}
-			}
-		} else if (user.getId() != currentUser.getId()) {
-			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para fazer essas alteracoes")
-					.build();
+//			}
+//		} else if (user.getId() != currentUser.getId()) {
+//			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para fazer essas alteracoes")
+//					.build();
 		} else {
 			if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
 				return Response.status(Response.Status.FORBIDDEN)
@@ -45,8 +45,6 @@ public class UserBusiness {
 				return Response.status(Response.Status.OK).entity(user).build();
 			}
 		}
-		return null;
-
 	}
 
 	public Response getUserLogin(Credentials userCredentials) {
