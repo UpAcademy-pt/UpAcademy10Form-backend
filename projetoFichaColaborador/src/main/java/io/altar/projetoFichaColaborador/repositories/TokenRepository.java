@@ -47,4 +47,10 @@ public class TokenRepository extends EntityRepository<Token>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected String getByIdQuery() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

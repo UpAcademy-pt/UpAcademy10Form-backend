@@ -25,7 +25,7 @@ public class TokenBusiness {
 	    //Long timeToLive = Instant.now().toEpochMilli()+86400000;//24h to milliseconds
 	    Long timeToLive = Instant.now().toEpochMilli()+10;
 	    Token Token = new Token(value,employeeEmail,timeToLive);
-	    Token tokenSaved = tR.addEntity(Token);
+	    Token tokenSaved = tR.create(Token);
 		return tokenSaved;    
 	}
 	
