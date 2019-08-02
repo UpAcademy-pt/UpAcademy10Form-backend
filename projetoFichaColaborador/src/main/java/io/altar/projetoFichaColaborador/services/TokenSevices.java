@@ -1,12 +1,8 @@
 package io.altar.projetoFichaColaborador.services;
 
-import java.util.List;
-
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -14,12 +10,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
-import io.altar.projetoFichaColaborador.business.EmailBusiness;
 import io.altar.projetoFichaColaborador.business.TokenBusiness;
-import io.altar.projetoFichaColaborador.business.UserBusiness;
 import io.altar.projetoFichaColaborador.models.Token;
 
 @Path("token")
@@ -29,19 +23,13 @@ public class TokenSevices {
 private UriInfo context;
 
 @Inject
-private UserBusiness ub;
-
-@Inject
-private EmailBusiness eb;
-
-@Inject
-private TokenBusiness tg;
+private TokenBusiness tB;
 
 @GET
 @Path("checkTokenGenerator")
 @Produces(MediaType.APPLICATION_JSON)
 public Token checkTokenGenerator() {
-    return tg.generateNewToken("email@gmail.com");
+    return tB.generateNewToken("email@gmail.com");
 }
 // @POST
 // @Produces(MediaType.TEXT_PLAIN)
@@ -67,18 +55,19 @@ public Token checkTokenGenerator() {
 @Path("")
 @Produces(MediaType.TEXT_PLAIN)
 public Response getTokenByValue(@QueryParam("val") String value) {
-    if(tg.isValid(value)) {
+    if(tB.isValid(value)) {
         return Response.status(Status.OK).entity("Token Valido").build();    
     }else {
         return Response.status(Status.UNAUTHORIZED).entity("Token Inválido").build();
     }
 }
-// @GET
-// @Path("checkTimeToken")
-// @Produces(MediaType.TEXT_PLAIN)
-// public String checkTimeToken() {
-// tg.isValid();
-// return null;
-// }
+
+@DELETE
+@Path("{val}")
+@Produces(MediaType.TEXT_PLAIN)
+public Response deleteTokenByValue(@PathParam("val") String value) {
+	tB.removeToken(value);
+	return Response.status(Status.OK).entity("Token Apagado").build();    
+}
 
 }

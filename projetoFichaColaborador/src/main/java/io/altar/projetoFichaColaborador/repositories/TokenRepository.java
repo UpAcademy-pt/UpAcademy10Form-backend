@@ -19,34 +19,39 @@ public void removeEntity(String employeeEmail) {
 }
 
 public Token getTokenByValue(String value) {
-    TypedQuery<Token> query = em.createQuery("SELECT t FROM Token t WHERE t.value = :value", getEntityClass());
+    System.out.println("------");
+    System.out.println("------");
+    System.out.println("------>>>> value : " + value);
+    System.out.println("------");
+    System.out.println("------");
+	TypedQuery<Token> query = em.createQuery("SELECT t FROM Token t WHERE t.value = :value", getEntityClass());
     query.setParameter("value", value);
     List<Token> foundTokens = (List<Token>) query.getResultList();
     if (foundTokens == null || foundTokens.isEmpty()) {
+    	System.out.println("________________----------________________--------___________________--------____________");
         return null;
     }
     Token foundToken = foundTokens.get(0);
+    System.out.println(foundToken.toString());
     return foundToken;
 }
+
+public Token getTokenByValueForDelete(String value) {
+    TypedQuery<Token> query = em.createQuery("SELECT t FROM Token t WHERE t.value = :value", getEntityClass());
+    query.setParameter("value", value);
+    List<Token> foundTokens = (List<Token>) query.getResultList();
+    Token foundToken = foundTokens.get(0);
+    System.out.println(foundToken.toString());
+    return foundToken;
+}
+
+
 
 public Token getTokenByEmail(String employeeEmail) {
     TypedQuery<Token> query = em.createNamedQuery(Token.GET_TOKEN_BY_EMAIL, getEntityClass());
     query.setParameter("employeeEmail", employeeEmail);
     return query.getSingleResult();
 }
-// public Token getTokenByValue(String value) {
-// TypedQuery<Token> query = em.createNamedQuery(Token.GET_TOKEN_BY_VALUE, Token.class);
-// query.setParameter("value", value);
-// Token test = query.getSingleResult();
-// System.out.println(test.toString());
-// return test;
-// }
-
-// public Token getTokenByValue(String value) {
-// Query query = em.createQuery("SELECT t FROM Token t WHERE t.value = :value");
-// query.setParameter("value", value);
-// return (Token) query.getSingleResult();
-// }
 
 @Override
 protected Class<Token> getEntityClass() {

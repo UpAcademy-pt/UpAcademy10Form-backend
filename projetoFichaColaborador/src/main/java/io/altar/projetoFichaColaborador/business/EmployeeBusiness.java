@@ -29,7 +29,7 @@ public class EmployeeBusiness {
 	public Response getEmpById(long id) {
 		
 		Employee employee = eR.getEntityById(id);
-		if (employee.getId() != null) {
+		if (employee.getId() > 0) {
 			return Response.accepted().entity(employee).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Este colaborador nao existe").build();
