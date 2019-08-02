@@ -1,15 +1,20 @@
 package io.altar.projetoFichaColaborador.models;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQuery(name = "GET_TOKEN_BY_VALUE", query = "SELECT t FROM Token t WHERE t.value = :value")
+
+@NamedQueries({@NamedQuery(name = "GET_TOKEN_BY_VALUE", query = "SELECT t FROM Token t WHERE t.value = :value"),
+		@NamedQuery(name = "GET_TOKEN_BY_EMAIL", query = "SELECT t FROM Token t WHERE t.employeeEmail = :employeeEmail")})
+
 
 public class Token extends Entity_ {
 	
 	private static final long serialVersionUID = 1L;
 	public static final String GET_TOKEN_BY_VALUE = "GET_TOKEN_BY_VALUE";
+	public static final String GET_TOKEN_BY_EMAIL = "GET_TOKEN_BY_EMAIL";
 	
 	private String value;
 	private Long timeToLive;

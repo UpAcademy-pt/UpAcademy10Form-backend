@@ -2,9 +2,9 @@ package io.altar.projetoFichaColaborador.repositories;
 
 import java.util.List;
 
+
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.TypedQuery;
-
 import io.altar.projetoFichaColaborador.models.Token;
 
 @RequestScoped
@@ -29,6 +29,12 @@ public class TokenRepository extends EntityRepository<Token>{
         }
         Token foundToken = foundTokens.get(0);
 		return foundToken;
+	}
+	
+	public Token getTokenByEmail(String employeeEmail) {
+		TypedQuery<Token> query = em.createNamedQuery(Token.GET_TOKEN_BY_EMAIL, getEntityClass());
+		query.setParameter("employeeEmail", employeeEmail);
+		return query.getSingleResult();
 	}
 
 	@Override

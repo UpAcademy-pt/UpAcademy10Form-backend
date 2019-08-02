@@ -46,6 +46,13 @@ public class TokenBusiness {
 		}
 	}
 	
+	public Token getTokenByEmail(String employeeEmail) {
+		Token token = tR.getTokenByEmail(employeeEmail);
+		//validar se existe
+		return token;
+	}
+	
+	
 //	public String isEmailValid(String Email) {
 //		if (!tR.getAll().contains(Email)){
 //			

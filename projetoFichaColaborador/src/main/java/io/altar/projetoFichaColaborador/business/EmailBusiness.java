@@ -19,7 +19,7 @@ public class EmailBusiness {
 		    Content content = new Content("text/plain", "Registe no link: exemplolink: url?"+ token);
 		    Mail mail = new Mail(from, subject, to, content);
 
-		    SendGrid sg = new SendGrid("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");
+		    SendGrid sg = new SendGrid(System.getProperty("SGKey"));
 		    Request request = new Request();
 		    try {
 		      request.setMethod(Method.POST);
