@@ -49,4 +49,11 @@ public class Token extends Entity_ {
 		this.employeeEmail = employeeEmail;
 	}
 
+	@Override
+	public String toString() {
+		return "Token [value=" + value + ", timeToLive=" + timeToLive + ", employeeEmail=" + employeeEmail + "]";
+	}
+
+	
+	
 }
