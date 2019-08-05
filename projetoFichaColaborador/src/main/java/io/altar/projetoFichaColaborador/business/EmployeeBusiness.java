@@ -47,6 +47,23 @@ public class EmployeeBusiness {
 	}
 	
 	
+	public Response removeEmployee(long id) {
+		
+		Employee employee = eR.getEntityById(id);
+		eR.remove(id);
+		return Response.status(Response.Status.OK).entity(employee).build();
+		
+		
+		
+	}
+	
+	public Response updateEmployee(Employee employee) {
+		
+		eR.update(employee);
+		return Response.status(Response.Status.OK).entity(employee).build();
+		
+	}
+	
 	
 	
 
