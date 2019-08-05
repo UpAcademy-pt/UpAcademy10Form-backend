@@ -50,7 +50,7 @@ public class UserBusiness {
 	public Response getUserLogin(Credentials userCredentials) {
 		User logedUserTry = uR.getUserFromCredentials(userCredentials);
 
-		if (logedUserTry.getId() != null) {
+		if (logedUserTry.getId() > 0) {
 			currentUser = logedUserTry;
 			return Response.accepted().entity(logedUserTry).build();
 		} else {
@@ -61,7 +61,7 @@ public class UserBusiness {
 	public Response getUserById(long id) {
 		User user = eR.getEntityById(id);
 
-		if (user.getId() != null) {
+		if (user.getId() > 0) {
 			return Response.accepted().entity(user).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Esse utilizador nao existe").build();

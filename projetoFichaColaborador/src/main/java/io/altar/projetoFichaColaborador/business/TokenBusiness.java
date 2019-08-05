@@ -5,8 +5,10 @@ import java.time.Instant;
 import java.util.Base64;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 
 import io.altar.projetoFichaColaborador.models.Token;
+import io.altar.projetoFichaColaborador.models.User;
 import io.altar.projetoFichaColaborador.repositories.TokenRepository;
 
 public class TokenBusiness {
@@ -22,8 +24,8 @@ public Token generateNewToken(String Email) {
     secureRandom.nextBytes(randomBytes);
     String value = base64Encoder.encodeToString(randomBytes);
     String employeeEmail = Email;
-    // Long timeToLive = Instant.now().toEpochMilli()+86400000;//24h to milliseconds
-    Long timeToLive = Instant.now().toEpochMilli() + 10;
+    Long timeToLive = Instant.now().toEpochMilli()+86400000;//24h to milliseconds
+    //Long timeToLive = Instant.now().toEpochMilli() + 10;
     Token Token = new Token(value, employeeEmail, timeToLive);
     Token tokenSaved = tR.create(Token);
     return tokenSaved;
@@ -51,7 +53,17 @@ public boolean isValid(String tokenValue) {
 
 public Token getTokenByEmail(String employeeEmail) {
     Token token = tR.getTokenByEmail(employeeEmail);
-    // validar se existe
     return token;
 }	
+
+public void removeToken(String tokenValue) {
+	Token token = tR.getTokenByValue(tokenValue);
+	System.out.println(token.toString());
+	long id = token.getId();
+	System.out.println(id);
+	tR.remove(id);
+	return;
+
+
+}
 }
