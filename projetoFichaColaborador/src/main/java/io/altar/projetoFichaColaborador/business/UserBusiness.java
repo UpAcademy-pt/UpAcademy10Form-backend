@@ -5,39 +5,37 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
-import io.altar.projetoFichaColaborador.models.Credentials;
 import io.altar.projetoFichaColaborador.models.User;
 import io.altar.projetoFichaColaborador.repositories.EntityRepository;
-import io.altar.projetoFichaColaborador.repositories.UserRepository;
 
 public class UserBusiness {
 
 	@Inject
 	private EntityRepository<User> eR;
-	@Inject
-	private UserRepository uR;
 
-	public static User currentUser;
+	private LoginBusiness lB;
 
 	public void createUser(User user) {
 		eR.create(user);
 	}
 
 	public Response updateUser(User user) {
-		if (user.getRole() == "owner") {
-//			if (user.getId() == currentUser.getId()) {
-				if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
+		User userTry = lB.getCurrentUser();
+		if (userTry.getRole() == "owner") {
+
+			if (user.getId() == userTry.getId()) {
+				if (user.getUsername() != userTry.getUsername() || user.getRole() != userTry.getRole()) {
 					return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
 				} else {
 					eR.update(user);
 					return Response.status(Response.Status.OK).entity(user).build();
 				}
-//			}
-//		} else if (user.getId() != currentUser.getId()) {
-//			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para fazer essas alteracoes")
-//					.build();
+			}
+		} else if (user.getId() != userTry.getId()) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para fazer essas alteracoes")
+					.build();
 		} else {
-			if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
+			if (user.getUsername() != userTry.getUsername() || user.getRole() != userTry.getRole()) {
 				return Response.status(Response.Status.FORBIDDEN)
 						.entity("Nao tem permissao para fazer essas alteracoes").build();
 			} else {
@@ -45,17 +43,7 @@ public class UserBusiness {
 				return Response.status(Response.Status.OK).entity(user).build();
 			}
 		}
-	}
-
-	public Response getUserLogin(Credentials userCredentials) {
-		User logedUserTry = uR.getUserFromCredentials(userCredentials);
-
-		if (logedUserTry.getId() > 0) {
-			currentUser = logedUserTry;
-			return Response.accepted().entity(logedUserTry).build();
-		} else {
-			return Response.status(Response.Status.NO_CONTENT).entity("Username e/ou Password incorrectos").build();
-		}
+		return null;
 	}
 
 	public Response getUserById(long id) {
@@ -79,14 +67,14 @@ public class UserBusiness {
 	}
 
 	public Response removeUser(long id) {
-		User user = eR.getEntityById(id);
 
+		User user = lB.getCurrentUser();
 		if (user.getRole() != "owner") {
-			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para eliminar este utilizador")
+			return Response.status(Response.Status.FORBIDDEN).entity("1Nao tem permissao para eliminar este utilizador")
 					.build();
 
-		} else if (user.getId() == currentUser.getId()) {
-			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para eliminar este utilizador")
+		} else if (user.getId() == lB.getCurrentUser().getId()) {
+			return Response.status(Response.Status.FORBIDDEN).entity("2Nao tem permissao para eliminar este utilizador")
 					.build();
 		} else {
 			eR.remove(id);

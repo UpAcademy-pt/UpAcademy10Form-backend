@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import io.altar.projetoFichaColaborador.business.UserBusiness;
-import io.altar.projetoFichaColaborador.models.Credentials;
 import io.altar.projetoFichaColaborador.models.User;
 
 @Path("users")
@@ -52,14 +51,6 @@ public class UserService {
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response updateUser(User user) {
 		return uB.updateUser(user);
-	}
-
-	@POST
-	@Path("login")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response getUserLogin(Credentials userCredential) {
-		return uB.getUserLogin(userCredential);
 	}
 
 	@POST
