@@ -38,5 +38,29 @@ public class EmployeeBusiness {
 	public void createEmployee(Employee employee) {
 		eR.create(employee);
 	}
+<<<<<<< Updated upstream
+=======
+	
+	
+	public Response removeEmployee(long id) {
+		
+		Employee employee = eR.getEntityById(id);
+		eR.remove(id);
+		return Response.status(Response.Status.OK).entity(employee).build();
+		
+		
+		
+	}
+	
+	public Response updateEmployee(Employee employee, long id) {
+		employee.setId(id);
+		eR.update(employee);
+		return Response.status(Response.Status.OK).entity(employee).build();
+		
+	}
+	
+	
+	
+>>>>>>> Stashed changes
 
 }

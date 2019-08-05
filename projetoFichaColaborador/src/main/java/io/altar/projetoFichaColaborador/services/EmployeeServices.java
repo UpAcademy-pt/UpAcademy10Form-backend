@@ -54,5 +54,27 @@ public class EmployeeServices {
 		return Response.ok().build();
 
 	}
+<<<<<<< Updated upstream
+=======
+	
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response removeEmployee(@PathParam("id") long id) {
+		
+		return eB.removeEmployee(id);
+		
+	}
+	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response updateEmployee(Employee employee, long id) {
+		
+		return eB.updateEmployee(employee, id);
+		
+	}
+	
+>>>>>>> Stashed changes
 
 }

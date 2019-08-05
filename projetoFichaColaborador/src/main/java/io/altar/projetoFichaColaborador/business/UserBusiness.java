@@ -85,8 +85,8 @@ public class UserBusiness {
 				return Response.status(Response.Status.OK).entity(user).build();
 			}
 		} else {
-			return Response.status(Response.Status.FORBIDDEN)
-			.entity("O utilizador que esta a tentar apagar nao existe").build();
+			return Response.status(Response.Status.FORBIDDEN).entity("O utilizador que esta a tentar apagar nao existe")
+					.build();
 		}
 
 	}
