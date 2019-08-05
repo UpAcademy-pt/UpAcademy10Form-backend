@@ -26,6 +26,22 @@ public class UserRepository extends EntityRepository<User> {
 	protected String getByIdQuery() {
 		return User.GET_USER_BY_ID;
 	}
+
+	protected String countUserExistsQuery() {
+		return User.COUNT_USER_EXISTS;
+	}
+
+	public boolean countUserExists(User user) {
+		long id = user.getId();
+		TypedQuery<User> query = em.createNamedQuery(countUserExistsQuery(), User.class);
+		query.setParameter("userId", id);
+		int valid = query.getFirstResult();
+		if (valid==1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 	public User getUserFromCredentials(Credentials userCredentials) {
 		TypedQuery<User> query = em.createNamedQuery(getUserLoginQuery(), User.class);

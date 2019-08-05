@@ -7,7 +7,8 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({ @NamedQuery(name = "GET_ALL_USERS", query = "SELECT u FROM User u"),
 		@NamedQuery(name = "GET_USER_LOGIN", query = "SELECT u  FROM User u WHERE u.username =:username AND u.password =:password"),
-		@NamedQuery(name = "GET_USER_BY_ID", query = "SELECT u  FROM User u WHERE u.id =:userId") })
+		@NamedQuery(name = "GET_USER_BY_ID", query = "SELECT u  FROM User u WHERE u.id =:userId"),
+		@NamedQuery(name = "COUNT_USER_EXISTS", query = "SELECT count(u)  FROM User u WHERE u.id =:userId")})
 
 public class User extends Entity_ {
 
@@ -18,9 +19,10 @@ public class User extends Entity_ {
 	public static final String GET_ALL_USERS = "GET_ALL_USERS";
 	public static final String GET_USER_LOGIN = "GET_USER_LOGIN";
 	public static final String GET_USER_BY_ID = "GET_USER_BY_ID";
+	public static final String COUNT_USER_EXISTS = "COUNT_USER_EXISTS";
 
 	private String username;
-	private int password;
+	private String password;
 	private String role;
 
 	public String getUsername() {
@@ -31,11 +33,11 @@ public class User extends Entity_ {
 		this.username = userName;
 	}
 
-	public int getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(int password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
