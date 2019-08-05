@@ -69,17 +69,26 @@ public class UserBusiness {
 	public Response removeUser(long id) {
 
 		User user = lB.getCurrentUser();
-		if (user.getRole() != "owner") {
-			return Response.status(Response.Status.FORBIDDEN).entity("1Nao tem permissao para eliminar este utilizador")
-					.build();
+		User userToRemove = eR.getEntityById(id);
+		boolean valid = eR.countEntityExists(userToRemove);
 
-		} else if (user.getId() == lB.getCurrentUser().getId()) {
-			return Response.status(Response.Status.FORBIDDEN).entity("2Nao tem permissao para eliminar este utilizador")
-					.build();
+		if (valid) {
+			if (user.getRole() != "owner") {
+				return Response.status(Response.Status.FORBIDDEN)
+						.entity("Nao tem permissao para eliminar este utilizador").build();
+
+			} else if (user.getId() == lB.getCurrentUser().getId()) {
+				return Response.status(Response.Status.FORBIDDEN)
+						.entity("Nao tem permissao para eliminar este utilizador").build();
+			} else {
+				eR.remove(id);
+				return Response.status(Response.Status.OK).entity(user).build();
+			}
 		} else {
-			eR.remove(id);
-			return Response.status(Response.Status.OK).entity(user).build();
+			return Response.status(Response.Status.FORBIDDEN)
+			.entity("O utilizador que esta a tentar apagar nao existe").build();
 		}
+
 	}
 
 }

@@ -30,4 +30,11 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		return Employee.GET_EMP_BY_ID;
 	}
 
+
+	@Override
+	protected String countEntityExistsQuery() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

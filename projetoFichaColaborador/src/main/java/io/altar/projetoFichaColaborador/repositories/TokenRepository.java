@@ -70,5 +70,11 @@ protected String getByIdQuery() {
 	// TODO Auto-generated method stub
 	return null;
 }
+
+@Override
+protected String countEntityExistsQuery() {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
 

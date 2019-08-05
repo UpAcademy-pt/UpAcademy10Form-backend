@@ -13,6 +13,7 @@ public class UserRepository extends EntityRepository<User> {
 	protected Class<User> getEntityClass() {
 		return User.class;
 	}
+	
 
 	@Override
 	protected String getAllQuery() {
@@ -26,21 +27,9 @@ public class UserRepository extends EntityRepository<User> {
 	protected String getByIdQuery() {
 		return User.GET_USER_BY_ID;
 	}
-
-	protected String countUserExistsQuery() {
+	@Override
+	protected String countEntityExistsQuery() {
 		return User.COUNT_USER_EXISTS;
-	}
-
-	public boolean countUserExists(User user) {
-		long id = user.getId();
-		TypedQuery<User> query = em.createNamedQuery(countUserExistsQuery(), User.class);
-		query.setParameter("userId", id);
-		int valid = query.getFirstResult();
-		if (valid==1) {
-			return true;
-		}else {
-			return false;
-		}
 	}
 	
 	public User getUserFromCredentials(Credentials userCredentials) {
