@@ -19,7 +19,7 @@ public class Entity_ implements Serializable{
 	private Instant modified;
 	
 	public long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(long id) {

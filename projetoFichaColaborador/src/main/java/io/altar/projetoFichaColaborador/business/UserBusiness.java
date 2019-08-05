@@ -19,27 +19,19 @@ public class UserBusiness {
 
 	public static User currentUser;
 
-	private String hashPassword(String passHashed) {
-		return Integer.toString(passHashed.hashCode());
-	}
-
 	public void createUser(User user) {
-		String pass = user.getPassword();
-		user.setPassword(hashPassword(pass));
 		eR.create(user);
 	}
 
 	public Response updateUser(User user) {
 		if (user.getRole() == "owner") {
 //			if (user.getId() == currentUser.getId()) {
-			if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
-				return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
-			} else {
-				String pass = user.getPassword();
-				user.setPassword(hashPassword(pass));
-				eR.update(user);
-				return Response.status(Response.Status.OK).entity(user).build();
-			}
+				if (user.getUsername() != currentUser.getUsername() || user.getRole() != currentUser.getRole()) {
+					return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
+				} else {
+					eR.update(user);
+					return Response.status(Response.Status.OK).entity(user).build();
+				}
 //			}
 //		} else if (user.getId() != currentUser.getId()) {
 //			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para fazer essas alteracoes")
@@ -49,8 +41,6 @@ public class UserBusiness {
 				return Response.status(Response.Status.FORBIDDEN)
 						.entity("Nao tem permissao para fazer essas alteracoes").build();
 			} else {
-				String pass = user.getPassword();
-				user.setPassword(hashPassword(pass));
 				eR.update(user);
 				return Response.status(Response.Status.OK).entity(user).build();
 			}
@@ -58,11 +48,10 @@ public class UserBusiness {
 	}
 
 	public Response getUserLogin(Credentials userCredentials) {
-		String pass = userCredentials.getPassword();
-		userCredentials.setPassword(hashPassword(pass));
 		User logedUserTry = uR.getUserFromCredentials(userCredentials);
-		boolean valid = uR.countUserExists(logedUserTry);
-		if (valid) {
+
+		if (logedUserTry.getId() > 0) {
+			currentUser = logedUserTry;
 			return Response.accepted().entity(logedUserTry).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Username e/ou Password incorrectos").build();
@@ -71,8 +60,8 @@ public class UserBusiness {
 
 	public Response getUserById(long id) {
 		User user = eR.getEntityById(id);
-		boolean valid = uR.countUserExists(user);
-		if (valid) {
+
+		if (user.getId() > 0) {
 			return Response.accepted().entity(user).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Esse utilizador nao existe").build();

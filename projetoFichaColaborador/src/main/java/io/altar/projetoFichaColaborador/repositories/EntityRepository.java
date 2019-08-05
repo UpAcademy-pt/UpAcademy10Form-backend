@@ -32,7 +32,8 @@ public abstract class EntityRepository<T extends Entity_> {
 	}
 
 	public void remove(long id) {
-		em.remove(id);
+		T entity = em.find(getEntityClass(), id);
+		em.remove(entity);
 	}
 
 	public T findEntity(long id) {
