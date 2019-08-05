@@ -56,9 +56,5 @@ public class Token extends Entity_ {
 		return "Token [value=" + value + ", timeToLive=" + timeToLive + ", employeeEmail=" + employeeEmail + ", id="
 				+ id + "]";
 	}
-
-	
-
-	
 	
 }
