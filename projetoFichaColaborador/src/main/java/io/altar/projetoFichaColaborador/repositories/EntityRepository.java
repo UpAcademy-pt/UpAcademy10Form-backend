@@ -21,6 +21,8 @@ public abstract class EntityRepository<T extends Entity_> {
 	protected abstract String getAllQuery();
 
 	protected abstract String getByIdQuery();
+	
+	protected abstract String countEntityExistsQuery();
 
 	public T create(T entity) {
 		entity.setCreated(Instant.now());
@@ -50,5 +52,16 @@ public abstract class EntityRepository<T extends Entity_> {
 		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
 		return query.getResultList();
 	}
-
+	
+	public boolean countEntityExists(T entity) {
+		long id = entity.getId();
+		TypedQuery<T> query = em.createNamedQuery(countEntityExistsQuery(), getEntityClass());
+		query.setParameter("entityId", id);
+		int valid = query.getFirstResult();
+		if (valid==1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

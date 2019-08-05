@@ -206,11 +206,11 @@ public class Employee extends Entity_{
 		this.dependents = dependents;
 	}
 
-	public String getDependentAges() {
+	public String getDependentsAges() {
 		return dependentsAges;
 	}
 
-	public void setDependentAges(String dependentAges) {
+	public void setDependentsAges(String dependentAges) {
 		this.dependentsAges = dependentAges;
 	}
 
