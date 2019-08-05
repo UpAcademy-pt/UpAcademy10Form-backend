@@ -13,9 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-import io.altar.projetoFichaColaborador.business.EmailBusiness;
 import io.altar.projetoFichaColaborador.business.TokenBusiness;
-import io.altar.projetoFichaColaborador.business.UserBusiness;
 import io.altar.projetoFichaColaborador.models.Token;
 
 @Path("token")
