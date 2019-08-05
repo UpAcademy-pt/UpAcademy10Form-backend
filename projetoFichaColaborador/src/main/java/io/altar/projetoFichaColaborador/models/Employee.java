@@ -10,7 +10,7 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
 	
 	@NamedQuery(name = "getAllEmployees", query = "SELECT e FROM Employee e"),
-	@NamedQuery(name = "getEmpById", query = "SELECT e FROM Employee e WHERE e.id =:employeeId ")
+	@NamedQuery(name = "getEmpById", query = "SELECT e FROM Employee e WHERE e.id =:entityId")
 	
 })
 public class Employee extends Entity_{
@@ -41,7 +41,7 @@ public class Employee extends Entity_{
 	private String maritalStatus;
 	private boolean maritalWorkStatus;
 	private int dependents;
-	private String dependentAges;
+	private String dependentsAges;
 	private String iban;
 	private String swift;
 	private String professionalCategory = "Consultor de sistemas de Informação";
@@ -207,11 +207,11 @@ public class Employee extends Entity_{
 	}
 
 	public String getDependentAges() {
-		return dependentAges;
+		return dependentsAges;
 	}
 
 	public void setDependentAges(String dependentAges) {
-		this.dependentAges = dependentAges;
+		this.dependentsAges = dependentAges;
 	}
 
 	public String getIban() {

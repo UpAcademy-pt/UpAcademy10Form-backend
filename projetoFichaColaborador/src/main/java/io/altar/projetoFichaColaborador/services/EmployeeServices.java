@@ -43,7 +43,7 @@ public class EmployeeServices {
 	}
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getEmpById(@PathParam("id") long id) {
 		
 		return eB.getEmpById(id);

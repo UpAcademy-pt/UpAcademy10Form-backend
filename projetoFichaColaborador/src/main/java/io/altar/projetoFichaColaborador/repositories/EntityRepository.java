@@ -42,7 +42,7 @@ public abstract class EntityRepository<T extends Entity_> {
 
 	public T getEntityById(long id) {
 		TypedQuery<T> query = em.createNamedQuery(getByIdQuery(), getEntityClass());
-		query.setParameter("userId", id);
+		query.setParameter("entityId", id);
 		return query.getSingleResult();
 	}
 
