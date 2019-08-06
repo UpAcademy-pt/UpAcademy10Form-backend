@@ -14,7 +14,6 @@ public class UserRepository extends EntityRepository<User> {
 		return User.class;
 	}
 	
-
 	@Override
 	protected String getAllQuery() {
 		return User.GET_ALL_USERS;

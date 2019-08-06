@@ -13,54 +13,37 @@ public class EmployeeBusiness {
 	@Inject
 	private EntityRepository<Employee> eR;
 
-	public Response getAllEmployees() {
-
-		List<Employee> tempAllEmployees = eR.getAll();
-		if (tempAllEmployees != null) {
-			return Response.accepted().entity(tempAllEmployees).build();
-		} else {
-			return Response.status(Response.Status.NO_CONTENT).build();
-		}
-
+	public void createEmployee(Employee employee) {
+		eR.create(employee);
 	}
 
-	public Response getEmpById(long id) {
+	public Response updateEmployee(Employee employee, long id) {
+		employee.setId(id);
+		eR.update(employee);
+		return Response.status(Response.Status.OK).entity(employee).build();
+	}
 
+	public Response getEmployeeById(long id) {
 		Employee employee = eR.getEntityById(id);
 		if (employee.getId() > 0) {
 			return Response.accepted().entity(employee).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Este colaborador nao existe").build();
 		}
-
 	}
 
-	public void createEmployee(Employee employee) {
-		eR.create(employee);
+	public Response getAllEmployees() {
+		List<Employee> tempAllEmployees = eR.getAll();
+		if (tempAllEmployees != null) {
+			return Response.accepted().entity(tempAllEmployees).build();
+		} else {
+			return Response.status(Response.Status.NO_CONTENT).build();
+		}
 	}
-<<<<<<< Updated upstream
-=======
-	
-	
+
 	public Response removeEmployee(long id) {
-		
 		Employee employee = eR.getEntityById(id);
 		eR.remove(id);
 		return Response.status(Response.Status.OK).entity(employee).build();
-		
-		
-		
 	}
-	
-	public Response updateEmployee(Employee employee, long id) {
-		employee.setId(id);
-		eR.update(employee);
-		return Response.status(Response.Status.OK).entity(employee).build();
-		
-	}
-	
-	
-	
->>>>>>> Stashed changes
-
 }

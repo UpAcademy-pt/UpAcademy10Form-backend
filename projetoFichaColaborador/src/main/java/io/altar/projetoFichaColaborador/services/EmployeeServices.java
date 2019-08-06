@@ -2,8 +2,10 @@ package io.altar.projetoFichaColaborador.services;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -32,19 +34,23 @@ public class EmployeeServices {
 	}
 
 	@GET
-	@Path("getAllEmployees")
+	@Path("/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getEmpById(@PathParam("id") long id) {
+		return eB.getEmpById(id);
+	}
+
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllEmployees() {
 		return eB.getAllEmployees();
 	}
-
-	@GET
-	@Path("/{id}")
+	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response getEmpById(@PathParam("id") long id) {
-
-		return eB.getEmpById(id);
-
+	public Response updateEmployee(Employee employee, long id) {
+		return eB.updateEmployee(employee, id);
 	}
 
 	@POST
@@ -52,29 +58,14 @@ public class EmployeeServices {
 	public Response createEmployee(Employee employee) {
 		eB.createEmployee(employee);
 		return Response.ok().build();
-
 	}
-<<<<<<< Updated upstream
-=======
-	
+
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response removeEmployee(@PathParam("id") long id) {
-		
 		return eB.removeEmployee(id);
-		
 	}
-	
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response updateEmployee(Employee employee, long id) {
-		
-		return eB.updateEmployee(employee, id);
-		
-	}
-	
->>>>>>> Stashed changes
 
+	
 }
