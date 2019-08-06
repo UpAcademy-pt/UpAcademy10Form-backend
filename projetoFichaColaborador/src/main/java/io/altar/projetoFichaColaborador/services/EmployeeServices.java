@@ -37,7 +37,7 @@ public class EmployeeServices {
 	@Path("/{id}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getEmpById(@PathParam("id") long id) {
-		return eB.getEmpById(id);
+		return eB.getEmployeeById(id);
 	}
 
 	@GET
@@ -49,15 +49,14 @@ public class EmployeeServices {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response updateEmployee(Employee employee, long id) {
-		return eB.updateEmployee(employee, id);
+	public Response updateEmployee(Employee employee) {
+		return eB.updateEmployee(employee);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createEmployee(Employee employee) {
+	public void createEmployee(Employee employee) {
 		eB.createEmployee(employee);
-		return Response.ok().build();
 	}
 
 	@DELETE

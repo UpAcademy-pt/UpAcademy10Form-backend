@@ -1,5 +1,6 @@
 package io.altar.projetoFichaColaborador.business;
 
+import java.time.Instant;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,10 +18,15 @@ public class EmployeeBusiness {
 		eR.create(employee);
 	}
 
-	public Response updateEmployee(Employee employee, long id) {
-		employee.setId(id);
-		eR.update(employee);
-		return Response.status(Response.Status.OK).entity(employee).build();
+	public Response updateEmployee(Employee employee) {
+		boolean valida = eR.countEntityExists(employee);
+		if (valida) {
+			employee.setModified(Instant.now());
+			eR.update(employee);
+			return Response.status(Response.Status.OK).entity(employee).build();
+		} else {
+			return Response.status(Response.Status.NO_CONTENT).entity("Este ficha nao existe").build();
+		}
 	}
 
 	public Response getEmployeeById(long id) {
@@ -43,7 +49,13 @@ public class EmployeeBusiness {
 
 	public Response removeEmployee(long id) {
 		Employee employee = eR.getEntityById(id);
-		eR.remove(id);
-		return Response.status(Response.Status.OK).entity(employee).build();
+		boolean valida = eR.countEntityExists(employee);
+		if (valida) {
+			eR.remove(id);
+			return Response.status(Response.Status.OK).entity(employee).build();
+		} else {
+			return Response.status(Response.Status.NO_CONTENT).entity("Esta ficha nao existe").build();
+		}
+
 	}
 }

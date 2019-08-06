@@ -22,15 +22,13 @@ public class LoginBusiness {
 
 	public Response getUserLogin(Credentials userCredentials) {
 		User logedUserTry = uR.getUserFromCredentials(userCredentials);
-
-		if (logedUserTry.getId() != 0) {
+		boolean valid = uR.countEntityExists(logedUserTry);
+		if (valid) {
 			setCurrentUser(logedUserTry);
 			return Response.accepted().entity(logedUserTry).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Username e/ou Password incorrectos").build();
 		}
 	}
-
-	
 
 }
