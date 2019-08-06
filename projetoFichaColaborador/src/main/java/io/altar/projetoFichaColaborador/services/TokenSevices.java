@@ -30,7 +30,7 @@ private TokenBusiness tb;
 @GET
 @Path("checkTokenGenerator/{email}")
 @Produces(MediaType.APPLICATION_JSON)
-public Token checkTokenGenerator(@QueryParam("email")String email) throws IOException {
+public Token checkTokenGenerator(@PathParam("email")String email) throws IOException {
     return tb.generateNewToken(email);
 }
 // @POST
