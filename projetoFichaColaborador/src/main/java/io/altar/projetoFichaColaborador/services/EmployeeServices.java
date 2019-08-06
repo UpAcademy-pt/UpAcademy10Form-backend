@@ -66,24 +66,6 @@ public class EmployeeServices {
 		return eB.removeEmployee(id);
 	}
 	
-	@DELETE
-	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response removeEmployee(@PathParam("id") long id) {
-		
-		return eB.removeEmployee(id);
-		
-	}
-	
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response updateEmployee(Employee employee) {
-		
-		return eB.updateEmployee(employee);
-		
-	}
-	
 
 	
 }
