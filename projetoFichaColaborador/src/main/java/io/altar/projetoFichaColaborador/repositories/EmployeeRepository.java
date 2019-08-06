@@ -1,6 +1,8 @@
 package io.altar.projetoFichaColaborador.repositories;
 
 import javax.faces.bean.RequestScoped;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import io.altar.projetoFichaColaborador.models.Employee;;
 
@@ -22,10 +24,18 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 	protected String getByIdQuery() {
 		return Employee.GET_EMPLOYEE_BY_ID;
 	}
+	
+	public boolean countEmployeeExists(Employee employee) {
+		long id = employee.getId();
+		Query query = em.createQuery("SELECT count(e) FROM Employee e WHERE e.id =:employeeId");
+		query.setParameter("employeeId", id);
+		int valid = query.getFirstResult();
 
-	@Override
-	protected String countEntityExistsQuery() {
-		return Employee.COUNT_EMPLOYEE_EXISTS;
+		if (valid==1) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 }

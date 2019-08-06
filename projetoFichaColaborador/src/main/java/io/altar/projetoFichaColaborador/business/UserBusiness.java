@@ -8,15 +8,21 @@ import javax.ws.rs.core.Response;
 
 import io.altar.projetoFichaColaborador.models.User;
 import io.altar.projetoFichaColaborador.repositories.EntityRepository;
+import io.altar.projetoFichaColaborador.repositories.UserRepository;
 
 public class UserBusiness {
 
 	@Inject
 	private EntityRepository<User> eR;
+	
+	@Inject
+	private UserRepository uR;
 
 	private LoginBusiness lB;
 
 	public void createUser(User user) {
+		String hashedPassword = lB.hashPassword(user.getPassword());
+		user.setPassword(hashedPassword);
 		eR.create(user);
 	}
 
@@ -27,6 +33,8 @@ public class UserBusiness {
 				if (user.getUsername() != userTry.getUsername() || user.getRole() != userTry.getRole()) {
 					return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
 				} else {
+					String hashedPassword = lB.hashPassword(user.getPassword());
+					user.setPassword(hashedPassword);
 					user.setModified(Instant.now());
 					eR.update(user);
 					return Response.status(Response.Status.OK).entity(user).build();
@@ -40,6 +48,8 @@ public class UserBusiness {
 				return Response.status(Response.Status.FORBIDDEN)
 						.entity("Nao tem permissao para fazer essas alteracoes").build();
 			} else {
+				String hashedPassword = lB.hashPassword(user.getPassword());
+				user.setPassword(hashedPassword);
 				user.setModified(Instant.now());
 				eR.update(user);
 				return Response.status(Response.Status.OK).entity(user).build();
@@ -50,7 +60,7 @@ public class UserBusiness {
 
 	public Response getUserById(long id) {
 		User user = eR.getEntityById(id);
-		boolean valid = eR.countEntityExists(user);
+		boolean valid = uR.countUserExists(user);
 		if (valid) {
 			return Response.accepted().entity(user).build();
 		} else {
@@ -72,7 +82,7 @@ public class UserBusiness {
 
 		User user = lB.getCurrentUser();
 		User userToRemove = eR.getEntityById(id);
-		boolean valid = eR.countEntityExists(userToRemove);
+		boolean valid = uR.countUserExists(userToRemove);
 
 		if (valid) {
 			if (user.getRole() != "owner") {
