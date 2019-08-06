@@ -13,28 +13,19 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		return Employee.class;
 	}
 
-	
-	// Get all entity occurrences
 	@Override
 	protected String getAllQuery() {
-		
 		return Employee.GET_ALL_EMPLOYEES;
-		
 	}
 	
-	
-	// Get entity occurrence by ID
 	@Override
 	protected String getByIdQuery() {
-
-		return Employee.GET_EMP_BY_ID;
+		return Employee.GET_EMPLOYEE_BY_ID;
 	}
-
 
 	@Override
 	protected String countEntityExistsQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		return Employee.COUNT_EMPLOYEE_EXISTS;
 	}
 
 }

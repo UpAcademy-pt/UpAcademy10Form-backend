@@ -1,5 +1,6 @@
 package io.altar.projetoFichaColaborador.business;
 
+import java.time.Instant;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,11 +23,11 @@ public class UserBusiness {
 	public Response updateUser(User user) {
 		User userTry = lB.getCurrentUser();
 		if (userTry.getRole() == "owner") {
-
 			if (user.getId() == userTry.getId()) {
 				if (user.getUsername() != userTry.getUsername() || user.getRole() != userTry.getRole()) {
 					return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
 				} else {
+					user.setModified(Instant.now());
 					eR.update(user);
 					return Response.status(Response.Status.OK).entity(user).build();
 				}
@@ -39,6 +40,7 @@ public class UserBusiness {
 				return Response.status(Response.Status.FORBIDDEN)
 						.entity("Nao tem permissao para fazer essas alteracoes").build();
 			} else {
+				user.setModified(Instant.now());
 				eR.update(user);
 				return Response.status(Response.Status.OK).entity(user).build();
 			}
@@ -48,8 +50,8 @@ public class UserBusiness {
 
 	public Response getUserById(long id) {
 		User user = eR.getEntityById(id);
-
-		if (user.getId() > 0) {
+		boolean valid = eR.countEntityExists(user);
+		if (valid) {
 			return Response.accepted().entity(user).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Esse utilizador nao existe").build();
@@ -85,8 +87,8 @@ public class UserBusiness {
 				return Response.status(Response.Status.OK).entity(user).build();
 			}
 		} else {
-			return Response.status(Response.Status.FORBIDDEN)
-			.entity("O utilizador que esta a tentar apagar nao existe").build();
+			return Response.status(Response.Status.FORBIDDEN).entity("O utilizador que esta a tentar apagar nao existe")
+					.build();
 		}
 
 	}

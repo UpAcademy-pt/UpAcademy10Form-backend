@@ -9,20 +9,18 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
 	
-	@NamedQuery(name = "getAllEmployees", query = "SELECT e FROM Employee e"),
-	@NamedQuery(name = "getEmpById", query = "SELECT e FROM Employee e WHERE e.id =:entityId")
+	@NamedQuery(name = "GET_ALL_EMPLOYEES", query = "SELECT e FROM Employee e"),
+	@NamedQuery(name = "GET_EMPLOYEE_BY_ID", query = "SELECT e FROM Employee e WHERE e.id =:employeeId "),
+	@NamedQuery(name = "COUNT_EMPLOYEE_EXISTS", query = "SELECT count(e) FROM Employee e WHERE e.id =:entityId")
 	
 })
 public class Employee extends Entity_{
 	
 	private static final long serialVersionUID = 1L;
-	public static final String GET_ALL_EMPLOYEES = "getAllEmployees";
-	public static final String GET_EMP_BY_ID = "getEmpById";
+	public static final String GET_ALL_EMPLOYEES = "GET_ALL_EMPLOYEES";
+	public static final String GET_EMPLOYEE_BY_ID = "GET_EMPLOYEE_BY_ID";
+	public static final String COUNT_EMPLOYEE_EXISTS = "COUNT_EMPLOYEE_EXISTS";
 	
-//	private String username;
-//	private String password;
-//	private String role ; // to do
-//	//private String roles[]= {"admin","owner"};
 	private String name;
 	private String address;
 	private String postalCode;
@@ -72,11 +70,12 @@ public class Employee extends Entity_{
 	private String insuranceRelativeName;
 	private String insuranceRelativeBirthDate;
 	private String companyFinancingRelative;
-	
 	private String commentarySection;
 	//
 		
-	public Employee() {}
+	public Employee() {
+		//empty constructor
+	}
 
 	public String getName() {
 		return name;

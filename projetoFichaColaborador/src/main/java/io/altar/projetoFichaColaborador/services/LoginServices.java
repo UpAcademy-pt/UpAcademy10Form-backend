@@ -21,7 +21,6 @@ public class LoginServices {
 	@Path("login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-
 	public Response getUserLogin(Credentials userCredential) {
 		return lB.getUserLogin(userCredential);
 	}

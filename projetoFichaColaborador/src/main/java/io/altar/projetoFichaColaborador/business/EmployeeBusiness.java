@@ -1,5 +1,6 @@
 package io.altar.projetoFichaColaborador.business;
 
+import java.time.Instant;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,30 +14,37 @@ public class EmployeeBusiness {
 	@Inject
 	private EntityRepository<Employee> eR;
 
-	public Response getAllEmployees() {
-
-		List<Employee> tempAllEmployees = eR.getAll();
-		if (tempAllEmployees != null) {
-			return Response.accepted().entity(tempAllEmployees).build();
-		} else {
-			return Response.status(Response.Status.NO_CONTENT).build();
-		}
-
+	public void createEmployee(Employee employee) {
+		eR.create(employee);
 	}
 
-	public Response getEmpById(long id) {
+	public Response updateEmployee(Employee employee) {
+		boolean valida = eR.countEntityExists(employee);
+		if (valida) {
+			employee.setModified(Instant.now());
+			eR.update(employee);
+			return Response.status(Response.Status.OK).entity(employee).build();
+		} else {
+			return Response.status(Response.Status.NO_CONTENT).entity("Este ficha nao existe").build();
+		}
+	}
 
+	public Response getEmployeeById(long id) {
 		Employee employee = eR.getEntityById(id);
 		if (employee.getId() > 0) {
 			return Response.accepted().entity(employee).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Este colaborador nao existe").build();
 		}
-
 	}
 
-	public void createEmployee(Employee employee) {
-		eR.create(employee);
+	public Response getAllEmployees() {
+		List<Employee> tempAllEmployees = eR.getAll();
+		if (tempAllEmployees != null) {
+			return Response.accepted().entity(tempAllEmployees).build();
+		} else {
+			return Response.status(Response.Status.NO_CONTENT).build();
+		}
 	}
 	
 	
@@ -60,4 +68,15 @@ public class EmployeeBusiness {
 	
 	
 
+	public Response removeEmployee(long id) {
+		Employee employee = eR.getEntityById(id);
+		boolean valida = eR.countEntityExists(employee);
+		if (valida) {
+			eR.remove(id);
+			return Response.status(Response.Status.OK).entity(employee).build();
+		} else {
+			return Response.status(Response.Status.NO_CONTENT).entity("Esta ficha nao existe").build();
+		}
+
+	}
 }

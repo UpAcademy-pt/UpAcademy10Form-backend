@@ -34,27 +34,36 @@ public class EmployeeServices {
 	}
 
 	@GET
-	@Path("getAllEmployees")
+	@Path("/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getEmpById(@PathParam("id") long id) {
+		return eB.getEmployeeById(id);
+	}
+
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllEmployees() {
 		return eB.getAllEmployees();
 	}
-
-	@GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getEmpById(@PathParam("id") long id) {
-
-		return eB.getEmpById(id);
-
+	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response updateEmployee(Employee employee) {
+		return eB.updateEmployee(employee);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createEmployee(Employee employee) {
+	public void createEmployee(Employee employee) {
 		eB.createEmployee(employee);
-		return Response.ok().build();
+	}
 
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response removeEmployee(@PathParam("id") long id) {
+		return eB.removeEmployee(id);
 	}
 	
 	@DELETE
@@ -76,4 +85,5 @@ public class EmployeeServices {
 	}
 	
 
+	
 }
