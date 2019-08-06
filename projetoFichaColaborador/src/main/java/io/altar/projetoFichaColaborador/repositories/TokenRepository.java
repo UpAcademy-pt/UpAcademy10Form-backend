@@ -20,16 +20,10 @@ public void removeEntity(String employeeEmail) {
 }
 
 public Token getTokenByValue(String value) {
-    System.out.println("------");
-    System.out.println("------");
-    System.out.println("------>>>> value : " + value);
-    System.out.println("------");
-    System.out.println("------");
 	TypedQuery<Token> query = em.createQuery("SELECT t FROM Token t WHERE t.value = :value", getEntityClass());
     query.setParameter("value", value);
     List<Token> foundTokens = (List<Token>) query.getResultList();
     if (foundTokens == null || foundTokens.isEmpty()) {
-    	System.out.println("________________----------________________--------___________________--------____________");
         return null;
     }
     Token foundToken = foundTokens.get(0);

@@ -1,5 +1,7 @@
 package io.altar.projetoFichaColaborador.services;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -26,10 +28,10 @@ private UriInfo context;
 private TokenBusiness tb;
 
 @GET
-@Path("checkTokenGenerator")
+@Path("checkTokenGenerator/{email}")
 @Produces(MediaType.APPLICATION_JSON)
-public Token checkTokenGenerator() {
-    return tb.generateNewToken("email@gmail.com");
+public Token checkTokenGenerator(@QueryParam("email")String email) throws IOException {
+    return tb.generateNewToken(email);
 }
 // @POST
 // @Produces(MediaType.TEXT_PLAIN)
