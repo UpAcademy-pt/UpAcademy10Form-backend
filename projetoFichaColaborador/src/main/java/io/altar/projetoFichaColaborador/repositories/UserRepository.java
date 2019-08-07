@@ -52,8 +52,19 @@ public class UserRepository extends EntityRepository<User> {
 		query.executeUpdate();
 	}
 	
-	public boolean countUserExists(User user) {
+	public boolean countUserExistsByEntity(User user) {
 		long id = user.getId();
+		Query query = em.createQuery("SELECT count(u)  FROM User u WHERE u.id =:userId");
+		query.setParameter("userId", id);
+		int valid = query.getFirstResult();
+		if (valid==1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public boolean countUserExistsById(long id) {;
 		Query query = em.createQuery("SELECT count(u)  FROM User u WHERE u.id =:userId");
 		query.setParameter("userId", id);
 		int valid = query.getFirstResult();

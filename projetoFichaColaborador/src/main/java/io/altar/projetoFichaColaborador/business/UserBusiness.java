@@ -59,9 +59,10 @@ public class UserBusiness {
 	}
 
 	public Response getUserById(long id) {
-		User user = eR.getEntityById(id);
-		boolean valid = uR.countUserExists(user);
+	
+		boolean valid = uR.countUserExistsById(id);
 		if (valid) {
+			User user = eR.getEntityById(id);
 			return Response.accepted().entity(user).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Esse utilizador nao existe").build();
@@ -81,15 +82,16 @@ public class UserBusiness {
 	public Response removeUser(long id) {
 
 		User user = lB.getCurrentUser();
-		User userToRemove = eR.getEntityById(id);
-		boolean valid = uR.countUserExists(userToRemove);
+
+		boolean valid = uR.countUserExistsById(id);
 
 		if (valid) {
+			User userToRemove = eR.getEntityById(id);
 			if (user.getRole() != "owner") {
 				return Response.status(Response.Status.FORBIDDEN)
 						.entity("Nao tem permissao para eliminar este utilizador").build();
 
-			} else if (user.getId() == lB.getCurrentUser().getId()) {
+			} else if (user.getId() == userToRemove.getId()) {
 				return Response.status(Response.Status.FORBIDDEN)
 						.entity("Nao tem permissao para eliminar este utilizador").build();
 			} else {

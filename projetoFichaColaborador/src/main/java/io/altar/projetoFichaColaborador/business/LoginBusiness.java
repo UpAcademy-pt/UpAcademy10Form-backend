@@ -29,7 +29,7 @@ public class LoginBusiness {
 
 		User logedUserTry = uR.getUserFromCredentials(userCredentials);
 
-		boolean valid = uR.countUserExists(logedUserTry);
+		boolean valid = uR.countUserExistsByEntity(logedUserTry);
 
 		if (valid) {
 				setCurrentUser(logedUserTry);
