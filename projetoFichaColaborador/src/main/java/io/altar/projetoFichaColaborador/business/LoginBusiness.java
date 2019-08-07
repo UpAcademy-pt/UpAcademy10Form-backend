@@ -1,14 +1,11 @@
 package io.altar.projetoFichaColaborador.business;
 
-
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
-
 
 import io.altar.projetoFichaColaborador.models.Credentials;
 import io.altar.projetoFichaColaborador.models.User;
 import io.altar.projetoFichaColaborador.repositories.UserRepository;
-
 
 public class LoginBusiness {
 
@@ -26,15 +23,13 @@ public class LoginBusiness {
 	}
 
 	public Response getUserLogin(Credentials userCredentials) {
-		
-		userCredentials.setPassword(hashPassword(userCredentials.getPassword()));
-		User logedUserTry = uR.getUserFromCredentials(userCredentials);
 
-		boolean valid = uR.countUserExistsByEntity(logedUserTry);
-
+		boolean valid = uR.countCredentialsExistsByEntity(userCredentials);
+		System.out.println(valid);
 		if (valid) {
-				setCurrentUser(logedUserTry);
-				return Response.accepted().entity(logedUserTry).build();
+			User logedUserTry = uR.getUserFromCredentials(userCredentials);
+			setCurrentUser(logedUserTry);
+			return Response.accepted().entity(logedUserTry).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Username e/ou Password incorrectos").build();
 		}

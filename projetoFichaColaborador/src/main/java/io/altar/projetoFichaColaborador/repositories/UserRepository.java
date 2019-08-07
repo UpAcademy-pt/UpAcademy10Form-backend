@@ -1,5 +1,7 @@
 package io.altar.projetoFichaColaborador.repositories;
 
+import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.Query;
@@ -34,13 +36,14 @@ public class UserRepository extends EntityRepository<User> {
 	}
 
 	public User getUserFromCredentials(Credentials userCredentials) {
+		
+		userCredentials.setPassword(lB.hashPassword(userCredentials.getPassword()));
+		System.out.println(userCredentials.getPassword());
 		TypedQuery<User> query = em.createNamedQuery(getUserLoginQuery(), User.class);
 		
 		query.setParameter("username", userCredentials.getUsername());
 		
-		String hashedPassword = lB.hashPassword(userCredentials.getPassword());
-		
-		query.setParameter("password", hashedPassword);
+		query.setParameter("password", userCredentials.getPassword());
 		
 		return query.getSingleResult();
 	}
@@ -50,6 +53,23 @@ public class UserRepository extends EntityRepository<User> {
 		Query query = em.createNativeQuery("INSERT INTO User (username, password, role) VALUES ('superadmin', :hashedPassword, 'owner')");
 		query.setParameter("hashedPassword", hashedPassword);
 		query.executeUpdate();
+	}
+	
+	public boolean countCredentialsExistsByEntity(Credentials userCredentials) {
+		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.username =:userName AND u.password=:passWord)");
+		query.setParameter("userName", userCredentials.getUsername());
+		System.out.println(userCredentials.getUsername());
+		System.out.println(lB.hashPassword(userCredentials.getPassword()));
+		query.setParameter("passWord", lB.hashPassword(userCredentials.getPassword()));
+		List<?> valid = query.getResultList();
+		
+		
+		System.out.println(valid);
+		if (valid.isEmpty()) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 	
 	public boolean countUserExistsByEntity(User user) {
