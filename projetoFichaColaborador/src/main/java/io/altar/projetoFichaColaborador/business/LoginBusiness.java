@@ -26,7 +26,8 @@ public class LoginBusiness {
 	}
 
 	public Response getUserLogin(Credentials userCredentials) {
-
+		
+		userCredentials.setPassword(hashPassword(userCredentials.getPassword()));
 		User logedUserTry = uR.getUserFromCredentials(userCredentials);
 
 		boolean valid = uR.countUserExistsByEntity(logedUserTry);
