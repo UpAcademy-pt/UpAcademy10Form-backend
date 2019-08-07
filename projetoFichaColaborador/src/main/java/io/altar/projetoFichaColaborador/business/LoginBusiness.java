@@ -1,6 +1,7 @@
 package io.altar.projetoFichaColaborador.business;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.altar.projetoFichaColaborador.models.Credentials;
@@ -27,9 +28,9 @@ public class LoginBusiness {
 		boolean valid = uR.countCredentialsExistsByEntity(userCredentials);
 		System.out.println(valid);
 		if (valid) {
-			User logedUserTry = uR.getUserFromCredentials(userCredentials);
-			setCurrentUser(logedUserTry);
-			return Response.accepted().entity(logedUserTry).build();
+			User logedUser = uR.getUserFromCredentials(userCredentials);
+			setCurrentUser(logedUser);
+			return Response.ok(logedUser, MediaType.APPLICATION_JSON).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Username e/ou Password incorrectos").build();
 		}
