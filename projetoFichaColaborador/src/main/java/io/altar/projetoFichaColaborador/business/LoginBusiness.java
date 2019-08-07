@@ -41,8 +41,8 @@ public class LoginBusiness {
 
 	public String hashPassword(String TextPassword) {
 		Integer hash = TextPassword.hashCode();
-		String hasedPass = hash.toString();
-		return hasedPass;
+		String hashedPass = hash.toString();
+		return hashedPass;
 	}
 
 	public void createSuperAdmin() {

@@ -14,15 +14,18 @@ public class UserBusiness {
 
 	@Inject
 	private EntityRepository<User> eR;
-	
+
 	@Inject
 	private UserRepository uR;
-
+	@Inject
 	private LoginBusiness lB;
 
 	public void createUser(User user) {
-		String hashedPassword = lB.hashPassword(user.getPassword());
-		user.setPassword(hashedPassword);
+
+		System.out.println(user.getPassword());
+
+		user.setPassword(lB.hashPassword(user.getPassword()));
+
 		eR.create(user);
 	}
 
@@ -59,7 +62,7 @@ public class UserBusiness {
 	}
 
 	public Response getUserById(long id) {
-	
+
 		boolean valid = uR.countUserExistsById(id);
 		if (valid) {
 			User user = eR.getEntityById(id);
