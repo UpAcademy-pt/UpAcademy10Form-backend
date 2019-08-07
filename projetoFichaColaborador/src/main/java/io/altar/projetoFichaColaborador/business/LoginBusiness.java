@@ -30,7 +30,10 @@ public class LoginBusiness {
 		if (valid) {
 			User logedUser = uR.getUserFromCredentials(userCredentials);
 			setCurrentUser(logedUser);
-			return Response.ok(logedUser, MediaType.APPLICATION_JSON).build();
+			userCredentials.setId(logedUser.getId());
+			userCredentials.setRole(logedUser.getRole());
+			userCredentials.setPassword("");
+			return Response.ok(userCredentials, MediaType.APPLICATION_JSON).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Username e/ou Password incorrectos").build();
 		}
