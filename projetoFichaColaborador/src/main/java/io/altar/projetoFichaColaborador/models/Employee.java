@@ -10,7 +10,7 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
 	
 	@NamedQuery(name = "GET_ALL_EMPLOYEES", query = "SELECT e FROM Employee e"),
-	@NamedQuery(name = "GET_EMPLOYEE_BY_ID", query = "SELECT e FROM Employee e WHERE e.id =:employeeId ")
+	@NamedQuery(name = "GET_EMPLOYEE_BY_ID", query = "SELECT e FROM Employee e WHERE e.id =:entityId")
 	
 	
 })

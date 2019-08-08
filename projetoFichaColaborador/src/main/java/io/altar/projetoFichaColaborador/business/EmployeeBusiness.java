@@ -53,8 +53,8 @@ public class EmployeeBusiness {
 	
 	public Response removeEmployee(long id) {
 		Employee employee = eR.getEntityById(id);
-		boolean valida = emR.countEmployeeExists(employee);
-		if (valida) {
+		//boolean valida = emR.countEmployeeExists(employee);
+		if (employee!=null) {
 			eR.remove(id);
 			return Response.status(Response.Status.OK).entity(employee).build();
 		} else {

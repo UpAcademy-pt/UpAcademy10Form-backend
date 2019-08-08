@@ -63,9 +63,11 @@ public class UserBusiness {
 
 	public Response getUserById(long id) {
 
-		boolean valid = uR.countUserExistsById(id);
-		if (valid) {
-			User user = eR.getEntityById(id);
+		//boolean valid = uR.countUserExistsById(id);
+		User user = eR.getEntityById(id);
+//		if (valid) {
+		if (user!=null) {
+//			User user = eR.getEntityById(id);
 			return Response.accepted().entity(user).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Esse utilizador nao existe").build();
