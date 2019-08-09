@@ -3,8 +3,10 @@ package io.altar.projetoFichaColaborador.models;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "myuser")
 @NamedQueries({ @NamedQuery(name = "GET_ALL_USERS", query = "SELECT u FROM User u"),
 		@NamedQuery(name = "GET_USER_LOGIN", query = "SELECT u  FROM User u WHERE u.username =:username AND u.password =:password"),
 		@NamedQuery(name = "GET_USER_BY_ID", query = "SELECT u  FROM User u WHERE u.id =:entityId")
