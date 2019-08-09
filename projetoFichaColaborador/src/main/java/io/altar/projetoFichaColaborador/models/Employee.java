@@ -1,6 +1,7 @@
 package io.altar.projetoFichaColaborador.models;
 
-import java.util.Date;
+import java.time.Instant;
+import java.util.ArrayList;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -8,18 +9,17 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-	
-	@NamedQuery(name = "GET_ALL_EMPLOYEES", query = "SELECT e FROM Employee e"),
-	@NamedQuery(name = "GET_EMPLOYEE_BY_ID", query = "SELECT e FROM Employee e WHERE e.id =:entityId")
-	
-	
+
+		@NamedQuery(name = "GET_ALL_EMPLOYEES", query = "SELECT e FROM Employee e"),
+		@NamedQuery(name = "GET_EMPLOYEE_BY_ID", query = "SELECT e FROM Employee e WHERE e.id =:entityId")
+
 })
-public class Employee extends Entity_{
-	
+public class Employee extends Entity_ {
+
 	private static final long serialVersionUID = 1L;
 	public static final String GET_ALL_EMPLOYEES = "GET_ALL_EMPLOYEES";
 	public static final String GET_EMPLOYEE_BY_ID = "GET_EMPLOYEE_BY_ID";
-	
+
 	private String name;
 	private String address;
 	private String postalCode;
@@ -30,24 +30,24 @@ public class Employee extends Entity_{
 	private String academicInstitution;
 	private String course;
 	private int cc;
-	private Date ccValidity;
+	private Instant ccValidity;
 	private String nationality;
-	private Date birthDate;
+	private Instant birthDate;
 	private String nif;
 	private String niss;
 	private String maritalStatus;
 	private boolean maritalWorkStatus;
 	private int dependents;
-	private String dependentsAges;
+	private int[] dependentsAges = new int[5];
 	private String iban;
 	private String swift;
-	private String professionalCategory = "Consultor de sistemas de Informação";
+	private String professionalCategory;
 	private String specialTech;
-	private String otherTech;
-	private Date admissionDate; //?
+	private ArrayList<String> otherTech;
+	private Instant admissionDate;
 	private float grossSalary;
 	private String contractType;
-	private String extras;
+	private String bonus;
 	private boolean twelfths;
 	private boolean twelfths5050;
 	private boolean twelfths112;
@@ -63,17 +63,19 @@ public class Employee extends Entity_{
 	private String clientSector;
 	private String project;
 	private String fare;
-	private String healthInsurance;
-	private String companyFinancing;
-	private String extensible;
-	private String insuranceRelativeName;
-	private String insuranceRelativeBirthDate;
-	private String companyFinancingRelative;
 	private String commentarySection;
+	//health insurance
+	private boolean healthInsurance;
+	private boolean companyFinancing;
+	private boolean extensible;
+	private boolean companyFinancingRelative;
+	private String[] insuranceRelativeName;
+	private String[] insuranceRelativeBirthDate;
+
 	//
-		
+
 	public Employee() {
-		//empty constructor
+		// empty constructor
 	}
 
 	public String getName() {
@@ -140,11 +142,11 @@ public class Employee extends Entity_{
 		this.cc = cc;
 	}
 
-	public Date getCcValidity() {
+	public Instant getCcValidity() {
 		return ccValidity;
 	}
 
-	public void setCcValidity(Date ccValidity) {
+	public void setCcValidity(Instant ccValidity) {
 		this.ccValidity = ccValidity;
 	}
 
@@ -156,11 +158,11 @@ public class Employee extends Entity_{
 		this.nationality = nationality;
 	}
 
-	public Date getBirthDate() {
+	public Instant getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(Instant birthDate) {
 		this.birthDate = birthDate;
 	}
 
@@ -204,11 +206,11 @@ public class Employee extends Entity_{
 		this.dependents = dependents;
 	}
 
-	public String getDependentsAges() {
+	public int[] getDependentsAges() {
 		return dependentsAges;
 	}
 
-	public void setDependentsAges(String dependentAges) {
+	public void setDependentsAges(int[] dependentAges) {
 		this.dependentsAges = dependentAges;
 	}
 
@@ -236,11 +238,11 @@ public class Employee extends Entity_{
 		this.professionalCategory = professionalCategory;
 	}
 
-	public Date getAdmissionDate() {
+	public Instant getAdmissionDate() {
 		return admissionDate;
 	}
 
-	public void setAdmissionDate(Date admissionDate) {
+	public void setAdmissionDate(Instant admissionDate) {
 		this.admissionDate = admissionDate;
 	}
 
@@ -261,11 +263,11 @@ public class Employee extends Entity_{
 	}
 
 	public String getExtras() {
-		return extras;
+		return bonus;
 	}
 
 	public void setExtras(String extras) {
-		this.extras = extras;
+		this.bonus = extras;
 	}
 
 	public boolean isTwelfths() {
@@ -380,11 +382,11 @@ public class Employee extends Entity_{
 		this.specialTech = specialTech;
 	}
 
-	public String getOtherTech() {
+	public ArrayList<String> getOtherTech() {
 		return otherTech;
 	}
 
-	public void setOtherTech(String otherTech) {
+	public void setOtherTech(ArrayList<String> otherTech) {
 		this.otherTech = otherTech;
 	}
 
@@ -420,11 +422,11 @@ public class Employee extends Entity_{
 		this.fare = fare;
 	}
 
-	public String getHealthInsurance() {
+	public boolean getHealthInsurance() {
 		return healthInsurance;
 	}
 
-	public void setHealthInsurance(String healthInsurance) {
+	public void setHealthInsurance(boolean healthInsurance) {
 		this.healthInsurance = healthInsurance;
 	}
 
@@ -436,44 +438,44 @@ public class Employee extends Entity_{
 		this.commentarySection = commentarySection;
 	}
 
-	public String getInsuranceRelativeName() {
+	public String[] getInsuranceRelativeName() {
 		return insuranceRelativeName;
 	}
 
-	public void setInsuranceRelativeName(String insuranceRelativeName) {
+	public void setInsuranceRelativeName(String[] insuranceRelativeName) {
 		this.insuranceRelativeName = insuranceRelativeName;
 	}
 
-	public String getInsuranceRelativeBirthDate() {
+	public String[] getInsuranceRelativeBirthDate() {
 		return insuranceRelativeBirthDate;
 	}
 
-	public void setInsuranceRelativeBirthDate(String insuranceRelativeBirthDate) {
+	public void setInsuranceRelativeBirthDate(String[] insuranceRelativeBirthDate) {
 		this.insuranceRelativeBirthDate = insuranceRelativeBirthDate;
 	}
 
-	public String getCompanyFinancing() {
+	public boolean getCompanyFinancing() {
 		return companyFinancing;
 	}
 
-	public void setCompanyFinancing(String companyFinancing) {
+	public void setCompanyFinancing(boolean companyFinancing) {
 		this.companyFinancing = companyFinancing;
 	}
 
-	public String getExtensible() {
+	public boolean getExtensible() {
 		return extensible;
 	}
 
-	public void setExtensible(String extensible) {
+	public void setExtensible(boolean extensible) {
 		this.extensible = extensible;
 	}
 
-	public String getCompanyFinancingRelative() {
+	public boolean getCompanyFinancingRelative() {
 		return companyFinancingRelative;
 	}
 
-	public void setCompanyFinancingRelative(String companyFinancingRelative) {
+	public void setCompanyFinancingRelative(boolean companyFinancingRelative) {
 		this.companyFinancingRelative = companyFinancingRelative;
 	}
-	
+
 }

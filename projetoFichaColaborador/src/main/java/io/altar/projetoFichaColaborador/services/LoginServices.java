@@ -22,7 +22,7 @@ public class LoginServices {
 	@POST
 	@Path("login")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserLogin(Credentials userCredential) {
 		return lB.getUserLogin(userCredential);
 	}

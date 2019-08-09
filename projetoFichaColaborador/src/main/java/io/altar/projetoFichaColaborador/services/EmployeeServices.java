@@ -17,7 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import io.altar.projetoFichaColaborador.business.EmployeeBusiness;
 import io.altar.projetoFichaColaborador.models.Employee;
 
-@Path("employee")
+@Path("employees")
 public class EmployeeServices {
 
 	@Context
@@ -48,7 +48,7 @@ public class EmployeeServices {
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateEmployee(Employee employee) {
 		return eB.updateEmployee(employee);
 	}
@@ -61,7 +61,7 @@ public class EmployeeServices {
 
 	@DELETE
 	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeEmployee(@PathParam("id") long id) {
 		return eB.removeEmployee(id);
 	}

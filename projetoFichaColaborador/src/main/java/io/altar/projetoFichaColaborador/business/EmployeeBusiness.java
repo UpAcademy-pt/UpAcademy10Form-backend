@@ -1,6 +1,7 @@
 package io.altar.projetoFichaColaborador.business;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,13 +20,27 @@ public class EmployeeBusiness {
 	private EmployeeRepository emR;
 	
 	public void createEmployee(Employee employee) {
+//		
+//		DateTimeFormatter formatterWithTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//		
+//		String dateToParse = employee.getCcValidity().toString();
+//		
+//		System.out.println(dateToParse);
+//		
+//		employee.setCcValidity(LocalDateTime.parse(dateToParse, formatter));
+//		
+//		
+//		
+//		employee.getBirthDate();
+//		employee.getAdmissionDate();
 		eR.create(employee);
 	}
 
 	public Response updateEmployee(Employee employee) {
 		boolean valida = emR.countEmployeeExists(employee);
 		if (valida) {
-			employee.setModified(Instant.now());
+			employee.setModified(LocalDateTime.now());
 			eR.update(employee);
 			return Response.status(Response.Status.OK).entity(employee).build();
 		} else {
