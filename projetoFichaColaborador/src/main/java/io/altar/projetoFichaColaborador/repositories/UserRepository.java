@@ -36,15 +36,11 @@ public class UserRepository extends EntityRepository<User> {
 	}
 
 	public User getUserFromCredentials(Credentials userCredentials) {
-		
 		userCredentials.setPassword(lB.hashPassword(userCredentials.getPassword()));
 		System.out.println(userCredentials.getPassword());
 		TypedQuery<User> query = em.createNamedQuery(getUserLoginQuery(), User.class);
-		
 		query.setParameter("username", userCredentials.getUsername());
-		
 		query.setParameter("password", userCredentials.getPassword());
-		
 		return query.getSingleResult();
 	}
 
@@ -58,13 +54,8 @@ public class UserRepository extends EntityRepository<User> {
 	public boolean countCredentialsExistsByEntity(Credentials userCredentials) {
 		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.username =:userName AND u.password=:passWord)");
 		query.setParameter("userName", userCredentials.getUsername());
-		System.out.println(userCredentials.getUsername());
-		System.out.println(lB.hashPassword(userCredentials.getPassword()));
 		query.setParameter("passWord", lB.hashPassword(userCredentials.getPassword()));
 		List<?> valid = query.getResultList();
-		
-		
-		System.out.println(valid);
 		if (valid.isEmpty()) {
 			return false;
 		}else {
@@ -74,24 +65,24 @@ public class UserRepository extends EntityRepository<User> {
 	
 	public boolean countUserExistsByEntity(User user) {
 		long id = user.getId();
-		Query query = em.createQuery("SELECT count(u)  FROM User u WHERE u.id =:userId");
+		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.id =:userId)");
 		query.setParameter("userId", id);
-		int valid = query.getFirstResult();
-		if (valid==1) {
-			return true;
-		}else {
+		List<?> valid = query.getResultList();
+		if (valid.isEmpty()) {
 			return false;
+		}else {
+			return true;
 		}
 	}
 	
-	public boolean countUserExistsById(long id) {;
-		Query query = em.createQuery("SELECT count(u)  FROM User u WHERE u.id =:userId");
+	public boolean countUserExistsById(long id) {
+		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.id =:userId)");
 		query.setParameter("userId", id);
-		int valid = query.getFirstResult();
-		if (valid==1) {
-			return true;
-		}else {
+		List<?> valid = query.getResultList();
+		if (valid.isEmpty()) {
 			return false;
+		}else {
+			return true;
 		}
 	}
 }

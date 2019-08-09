@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.altar.projetoFichaColaborador.models.User;
@@ -62,13 +63,10 @@ public class UserBusiness {
 	}
 
 	public Response getUserById(long id) {
-
-		//boolean valid = uR.countUserExistsById(id);
-		User user = eR.getEntityById(id);
-//		if (valid) {
-		if (user!=null) {
-//			User user = eR.getEntityById(id);
-			return Response.accepted().entity(user).build();
+		boolean valid = uR.countUserExistsById(id);
+		if (valid) {
+			User user = eR.getEntityById(id);
+			return Response.ok(user, MediaType.APPLICATION_JSON).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).entity("Esse utilizador nao existe").build();
 		}
@@ -85,12 +83,10 @@ public class UserBusiness {
 	}
 
 	public Response removeUser(long id) {
-
 		User user = lB.getCurrentUser();
-
 		boolean valid = uR.countUserExistsById(id);
-
 		if (valid) {
+	
 			User userToRemove = eR.getEntityById(id);
 			if (user.getRole() != "owner") {
 				return Response.status(Response.Status.FORBIDDEN)

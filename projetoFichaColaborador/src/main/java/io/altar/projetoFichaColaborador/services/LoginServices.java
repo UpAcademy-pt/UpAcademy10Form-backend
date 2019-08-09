@@ -26,8 +26,7 @@ public class LoginServices {
 	public Response getUserLogin(Credentials userCredential) {
 		return lB.getUserLogin(userCredential);
 	}
-	
-	
+
 	@GET
 	@Path("initDb")
 	public void createSuperAdminEndPoint() {

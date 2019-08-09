@@ -35,7 +35,7 @@ public class UserService {
 
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response getUserById(@PathParam("id") long id) {
 		return uB.getUserById(id);
 	}
