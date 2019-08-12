@@ -62,7 +62,7 @@ public class EmployeeBusiness {
 	}
 
 	public Response filterEmployeesValidation(Filters filter) {
-		List<?> filteredEmployeesList = emR.filterEmployees(filter);
+		List<Employee> filteredEmployeesList = emR.filterEmployees(filter);
 		if (filteredEmployeesList.isEmpty()) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Não há resultados que correspondam à sua pesquisa").build();

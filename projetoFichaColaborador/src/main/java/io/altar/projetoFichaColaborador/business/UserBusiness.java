@@ -76,7 +76,7 @@ public class UserBusiness {
 	}
 
 	public Response getUserById(long id) {
-		boolean valid = uR.countUserExistsById(id);
+		boolean valid = uR.checkUserExistsById(id);
 		if (valid) {
 			User user = eR.getEntityById(id);
 			return Response.ok(user, MediaType.APPLICATION_JSON).build();
@@ -104,7 +104,7 @@ public class UserBusiness {
 //		user.setUsername("admin");
 //		user.setPassword("superadmin");
 
-		boolean valid = uR.countUserExistsById(id);
+		boolean valid = uR.checkUserExistsById(id);
 
 		if (valid) {
 			User userToRemove = eR.getEntityById(id);

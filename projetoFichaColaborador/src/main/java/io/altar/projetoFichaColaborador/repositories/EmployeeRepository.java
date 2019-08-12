@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.faces.bean.RequestScoped;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import io.altar.projetoFichaColaborador.models.Employee;
 import io.altar.projetoFichaColaborador.models.Filters;;
@@ -51,7 +52,10 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		}
 	}
 
-	public List<?> filterEmployees(Filters filter) {
+	public List<Employee> filterEmployees(Filters filter) {
+		
+		//enviar 20 de cada vez e dizer quantos e que ja la tao e qual o total de resultados
+		
 		boolean previousQueryEntry = false;
 		boolean queryEntryAdmissionDates = false;
 		boolean queryEntryTech = false;
@@ -60,29 +64,29 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 
 		if (filter.getAdmissionDateMIN() != null) {
 			queryEntryAdmissionDates = true;
-			queryInputs = "e.admissionDate >=:admissionDateMIN AND e.admissionDate <=:admissionDateMAX";
+			queryInputs = " e.admissionDate >=:admissionDateMIN AND e.admissionDate <=:admissionDateMAX";
 			previousQueryEntry = true;
 		}
 		if (filter.getSpecialTech() != null) {
 			queryEntryTech = true;
 			if (previousQueryEntry) {
-				queryInputs += "AND e.specialTech =:specialTech";
+				queryInputs += " AND e.specialTech =:specialTech";
 				previousQueryEntry = true;
 			} else {
-				queryInputs += "e.specialTech =:specialTech";
+				queryInputs += " e.specialTech =:specialTech";
 				previousQueryEntry = true;
 			}
 		}
 		if (filter.getDistrict() != null) {
 			queryEntryDistrict = true;
 			if (previousQueryEntry) {
-				queryInputs += "AND e.district =:district";
+				queryInputs += " AND e.district =:district";
 			} else {
-				queryInputs += "e.district =:district";
+				queryInputs += " e.district =:district";
 			}
 		}
 
-		Query query = em.createQuery("SELECT e FROM Employee e WHERE " + queryInputs);
+		TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE" + queryInputs, Employee.class);
 		if (queryEntryAdmissionDates) {
 			query.setParameter("admissionDateMIN", filter.getAdmissionDateMIN());
 			query.setParameter("admissionDateMAX", filter.getAdmissionDateMAX());
@@ -93,7 +97,6 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		if (queryEntryDistrict) {
 			query.setParameter("district", filter.getDistrict());
 		}
-		List<?> filteredEmployeesList = query.getResultList();
-		return filteredEmployeesList;
+		return query.getResultList();
 	}
 }

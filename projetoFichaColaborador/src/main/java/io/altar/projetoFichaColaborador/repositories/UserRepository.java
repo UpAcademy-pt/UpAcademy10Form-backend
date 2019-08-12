@@ -52,38 +52,20 @@ public class UserRepository extends EntityRepository<User> {
 	}
 	
 	public boolean countCredentialsExistsByEntity(Credentials userCredentials) {
-		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.username =:userName AND u.password=:passWord)");
+		TypedQuery<Long> query = em.createQuery("SELECT COUNT(u) FROM User u WHERE u.username =:userName AND u.password=:passWord)", Long.class);
 		query.setParameter("userName", userCredentials.getUsername());
 		query.setParameter("passWord", lB.hashPassword(userCredentials.getPassword()));
-		List<?> valid = query.getResultList();
-		if (valid.isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
+		return query.getSingleResult().longValue() > 0;
 	}
 	
-	public boolean countUserExistsByEntity(User user) {
-		long id = user.getId();
-		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.id =:userId)");
-		query.setParameter("userId", id);
-		List<?> valid = query.getResultList();
-		if (valid.isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
+	public boolean checkUserExistsByEntity(User user) {
+		return checkUserExistsById(user.getId());
 	}
 	
-	public boolean countUserExistsById(long id) {
-		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.id =:userId)");
+	public boolean checkUserExistsById(long id) {
+		TypedQuery<Long> query = em.createQuery("SELECT COUNT(u) FROM User u WHERE u.id =:userId", Long.class);
 		query.setParameter("userId", id);
-		List<?> valid = query.getResultList();
-		if (valid.isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
+		return query.getSingleResult().longValue() > 0;
 	}
 }
 
