@@ -1,13 +1,14 @@
 package io.altar.projetoFichaColaborador.business;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.altar.projetoFichaColaborador.models.Employee;
+import io.altar.projetoFichaColaborador.models.Filters;
 import io.altar.projetoFichaColaborador.repositories.EmployeeRepository;
 import io.altar.projetoFichaColaborador.repositories.EntityRepository;
 
@@ -15,66 +16,57 @@ public class EmployeeBusiness {
 
 	@Inject
 	private EntityRepository<Employee> eR;
-	
+
 	@Inject
 	private EmployeeRepository emR;
-	
+
 	public void createEmployee(Employee employee) {
-//		
-//		DateTimeFormatter formatterWithTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//		
-//		String dateToParse = employee.getCcValidity().toString();
-//		
-//		System.out.println(dateToParse);
-//		
-//		employee.setCcValidity(LocalDateTime.parse(dateToParse, formatter));
-//		
-//		
-//		
-//		employee.getBirthDate();
-//		employee.getAdmissionDate();
 		eR.create(employee);
 	}
 
 	public Response updateEmployee(Employee employee) {
-		boolean valida = emR.countEmployeeExists(employee);
+		boolean valida = emR.countEmployeeExistsByEntity(employee);
 		if (valida) {
-			employee.setModified(LocalDateTime.now());
+			employee.setModified(Instant.now().toEpochMilli());
 			eR.update(employee);
 			return Response.status(Response.Status.OK).entity(employee).build();
-		} else {
-			return Response.status(Response.Status.NO_CONTENT).entity("Este ficha nao existe").build();
 		}
+		return Response.status(Response.Status.NOT_FOUND).entity("Esta ficha nao existe").build();
 	}
 
 	public Response getEmployeeById(long id) {
-		Employee employee = eR.getEntityById(id);
-		if (employee.getId() > 0) {
-			return Response.accepted().entity(employee).build();
-		} else {
-			return Response.status(Response.Status.NO_CONTENT).entity("Este colaborador nao existe").build();
+		boolean valid = emR.countEmployeeExistsById(id);
+		if (valid) {
+			Employee employee = eR.getEntityById(id);
+			return Response.ok(employee, MediaType.APPLICATION_JSON).build();
 		}
+		return Response.status(Response.Status.NOT_FOUND).entity("Essa ficha nao existe").build();
 	}
 
 	public Response getAllEmployees() {
 		List<Employee> tempAllEmployees = eR.getAll();
-		if (tempAllEmployees != null) {
-			return Response.accepted().entity(tempAllEmployees).build();
-		} else {
-			return Response.status(Response.Status.NO_CONTENT).build();
+		if (tempAllEmployees.isEmpty()) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Essa ficha nao existe").build();
 		}
+		return Response.ok(tempAllEmployees, MediaType.APPLICATION_JSON).build();
 	}
-	
-	public Response removeEmployee(long id) {
-		Employee employee = eR.getEntityById(id);
-		//boolean valida = emR.countEmployeeExists(employee);
-		if (employee!=null) {
-			eR.remove(id);
-			return Response.status(Response.Status.OK).entity(employee).build();
-		} else {
-			return Response.status(Response.Status.NO_CONTENT).entity("Esta ficha nao existe").build();
-		}
 
+	public Response removeEmployee(long id) {
+		boolean valid = emR.countEmployeeExistsById(id);
+		if (valid) {
+			Employee employee = eR.getEntityById(id);
+			eR.remove(id);
+			return Response.ok(employee, MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).entity("Essa ficha nao existe").build();
+	}
+
+	public Response filterEmployeesValidation(Filters filter) {
+		List<?> filteredEmployeesList = emR.filterEmployees(filter);
+		if (filteredEmployeesList.isEmpty()) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("Não há resultados que correspondam à sua pesquisa").build();
+		}
+		return Response.ok(filteredEmployeesList, MediaType.APPLICATION_JSON).build();
 	}
 }

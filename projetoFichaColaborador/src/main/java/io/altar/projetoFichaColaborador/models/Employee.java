@@ -1,6 +1,5 @@
 package io.altar.projetoFichaColaborador.models;
 
-import java.time.Instant;
 import java.util.ArrayList;
 
 import javax.persistence.Entity;
@@ -24,15 +23,16 @@ public class Employee extends Entity_ {
 	private String address;
 	private String postalCode;
 	private String location;
+	private String district;
 	private String email;
 	private int phoneNumber;
 	private String academicQualifications;
 	private String academicInstitution;
 	private String course;
 	private int cc;
-	private Instant ccValidity;
+	private long ccValidity;
 	private String nationality;
-	private Instant birthDate;
+	private long birthDate;
 	private String nif;
 	private String niss;
 	private String maritalStatus;
@@ -44,7 +44,7 @@ public class Employee extends Entity_ {
 	private String professionalCategory;
 	private String specialTech;
 	private ArrayList<String> otherTech;
-	private Instant admissionDate;
+	private long admissionDate;
 	private float grossSalary;
 	private String contractType;
 	private String bonus;
@@ -142,11 +142,11 @@ public class Employee extends Entity_ {
 		this.cc = cc;
 	}
 
-	public Instant getCcValidity() {
+	public long getCcValidity() {
 		return ccValidity;
 	}
 
-	public void setCcValidity(Instant ccValidity) {
+	public void setCcValidity(long ccValidity) {
 		this.ccValidity = ccValidity;
 	}
 
@@ -158,11 +158,11 @@ public class Employee extends Entity_ {
 		this.nationality = nationality;
 	}
 
-	public Instant getBirthDate() {
+	public long getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Instant birthDate) {
+	public void setBirthDate(long birthDate) {
 		this.birthDate = birthDate;
 	}
 
@@ -238,11 +238,11 @@ public class Employee extends Entity_ {
 		this.professionalCategory = professionalCategory;
 	}
 
-	public Instant getAdmissionDate() {
+	public long getAdmissionDate() {
 		return admissionDate;
 	}
 
-	public void setAdmissionDate(Instant admissionDate) {
+	public void setAdmissionDate(long admissionDate) {
 		this.admissionDate = admissionDate;
 	}
 
@@ -476,6 +476,14 @@ public class Employee extends Entity_ {
 
 	public void setCompanyFinancingRelative(boolean companyFinancingRelative) {
 		this.companyFinancingRelative = companyFinancingRelative;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 
 }

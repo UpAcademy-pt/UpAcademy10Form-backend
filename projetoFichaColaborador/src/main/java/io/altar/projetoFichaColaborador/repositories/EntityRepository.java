@@ -1,6 +1,5 @@
 package io.altar.projetoFichaColaborador.repositories;
 
-import java.time.Instant;
 import java.util.List;
 
 import javax.persistence.EntityManager;

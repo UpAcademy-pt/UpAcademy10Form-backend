@@ -48,7 +48,7 @@ public class UserService {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateUser(User user) {
 		return uB.updateUser(user);
 	}
@@ -61,9 +61,11 @@ public class UserService {
 
 	@DELETE
 	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeUser(@PathParam("id") long id) {
 		return uB.removeUser(id);
 	}
+	
+	
 
 }

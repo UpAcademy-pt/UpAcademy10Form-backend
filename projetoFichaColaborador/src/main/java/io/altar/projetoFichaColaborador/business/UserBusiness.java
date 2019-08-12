@@ -48,9 +48,11 @@ public class UserBusiness {
 				if (!user.getUsername().equals(userTry.getUsername()) || !user.getRole().equals(userTry.getRole())) {
 					return Response.status(Response.Status.NOT_FOUND).entity("1-Nao pode alterar estes dados").build();
 				}
+				user.setModified(Instant.now().toEpochMilli());
 				updateExecution(user);
 				return Response.ok(user, MediaType.APPLICATION_JSON).build();
 			}
+			user.setModified(Instant.now().toEpochMilli());
 			updateExecution(user);
 			return Response.ok(user, MediaType.APPLICATION_JSON).build();
 		} else if (user.getId() != userTry.getId()) {
@@ -59,6 +61,7 @@ public class UserBusiness {
 		if (!user.getUsername().equals(userTry.getUsername()) || !user.getRole().equals(userTry.getRole())) {
 			return Response.status(Response.Status.NOT_FOUND).entity("3-Nao pode alterar estes dados").build();
 		} else {
+			user.setModified(Instant.now().toEpochMilli());
 			updateExecution(user);
 			;
 			return Response.ok(user, MediaType.APPLICATION_JSON).build();
@@ -96,10 +99,10 @@ public class UserBusiness {
 //		User user = lB.getCurrentUser();
 
 		User user = new User();
-		user.setId(1);
-		user.setRole("owner");
-		user.setUsername("admin");
-		user.setPassword("superadmin");
+//		user.setId(1);
+//		user.setRole("owner");
+//		user.setUsername("admin");
+//		user.setPassword("superadmin");
 
 		boolean valid = uR.countUserExistsById(id);
 
@@ -115,7 +118,8 @@ public class UserBusiness {
 			eR.remove(id);
 			return Response.ok(userToRemove, MediaType.APPLICATION_JSON).build();
 		}
-		return Response.status(Response.Status.NOT_FOUND).entity("O utilizador que esta a tentar apagar nao existe").build();
+		return Response.status(Response.Status.NOT_FOUND).entity("O utilizador que esta a tentar apagar nao existe")
+				.build();
 	}
 
 }
