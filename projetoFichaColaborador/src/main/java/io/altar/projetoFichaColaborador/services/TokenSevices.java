@@ -28,9 +28,9 @@ private UriInfo context;
 private TokenBusiness tb;
 
 @GET
-@Path("checkTokenGenerator/{email}")
+@Path("generateToken/{email}")
 @Produces(MediaType.APPLICATION_JSON)
-public Token checkTokenGenerator(@PathParam("email")String email) throws IOException {
+public Token generateToken(@PathParam("email")String email) throws IOException {
     return tb.generateNewToken(email);
 }
 // @POST
