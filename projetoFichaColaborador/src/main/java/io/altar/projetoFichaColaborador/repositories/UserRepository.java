@@ -1,7 +1,5 @@
 package io.altar.projetoFichaColaborador.repositories;
 
-import java.util.List;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.Query;
