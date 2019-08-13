@@ -10,55 +10,51 @@ import javax.ws.rs.core.Response;
 import io.altar.projetoFichaColaborador.models.Employee;
 import io.altar.projetoFichaColaborador.models.Filters;
 import io.altar.projetoFichaColaborador.repositories.EmployeeRepository;
-import io.altar.projetoFichaColaborador.repositories.EntityRepository;
 
 public class EmployeeBusiness {
-
-	@Inject
-	private EntityRepository<Employee> eR;
 
 	@Inject
 	private EmployeeRepository emR;
 
 	public void createEmployee(Employee employee) {
-		eR.create(employee);
+		emR.create(employee);
 	}
 
 	public Response updateEmployee(Employee employee) {
-		boolean valida = emR.countEmployeeExistsByEntity(employee);
+		boolean valida = emR.checkEmployeeExistsByEntity(employee);
 		if (valida) {
 			employee.setModified(Instant.now().toEpochMilli());
-			eR.update(employee);
+			emR.update(employee);
 			return Response.status(Response.Status.OK).entity(employee).build();
 		}
 		return Response.status(Response.Status.NOT_FOUND).entity("Esta ficha nao existe").build();
 	}
+	
+	public Response removeEmployee(long id) {
+		boolean valid = emR.checkEntityExistsById(id);
+		if (valid) {
+			Employee employee = emR.getEntityById(id);
+			emR.remove(id);
+			return Response.ok(employee, MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).entity("Essa ficha nao existe").build();
+	}
 
 	public Response getEmployeeById(long id) {
-		boolean valid = emR.countEmployeeExistsById(id);
+		boolean valid = emR.checkEntityExistsById(id);
 		if (valid) {
-			Employee employee = eR.getEntityById(id);
+			Employee employee = emR.getEntityById(id);
 			return Response.ok(employee, MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(Response.Status.NOT_FOUND).entity("Essa ficha nao existe").build();
 	}
 
 	public Response getAllEmployees() {
-		List<Employee> tempAllEmployees = eR.getAll();
+		List<Employee> tempAllEmployees = emR.getAll();
 		if (tempAllEmployees.isEmpty()) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Essa ficha nao existe").build();
 		}
 		return Response.ok(tempAllEmployees, MediaType.APPLICATION_JSON).build();
-	}
-
-	public Response removeEmployee(long id) {
-		boolean valid = emR.countEmployeeExistsById(id);
-		if (valid) {
-			Employee employee = eR.getEntityById(id);
-			eR.remove(id);
-			return Response.ok(employee, MediaType.APPLICATION_JSON).build();
-		}
-		return Response.status(Response.Status.NOT_FOUND).entity("Essa ficha nao existe").build();
 	}
 
 	public Response filterEmployeesValidation(Filters filter) {

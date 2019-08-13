@@ -7,17 +7,16 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQueries({
+@NamedQueries({ @NamedQuery(name = "GET_ALL_EMPLOYEES", query = "SELECT e FROM Employee e"),
+		@NamedQuery(name = "GET_EMPLOYEE_BY_ID", query = "SELECT e FROM Employee e WHERE e.id =:entityId"),
+		@NamedQuery(name = "CHECK_EMPLOYEE_EXISTS_BY_ID", query = "SELECT COUNT(e) FROM Employee e WHERE e.id =:entityId") })
 
-		@NamedQuery(name = "GET_ALL_EMPLOYEES", query = "SELECT e FROM Employee e"),
-		@NamedQuery(name = "GET_EMPLOYEE_BY_ID", query = "SELECT e FROM Employee e WHERE e.id =:entityId")
-
-})
 public class Employee extends Entity_ {
 
 	private static final long serialVersionUID = 1L;
 	public static final String GET_ALL_EMPLOYEES = "GET_ALL_EMPLOYEES";
 	public static final String GET_EMPLOYEE_BY_ID = "GET_EMPLOYEE_BY_ID";
+	public static final String CHECK_EMPLOYEE_EXISTS_BY_ID = "CHECK_EMPLOYEE_EXISTS_BY_ID";
 
 	private String name;
 	private String address;
@@ -64,7 +63,7 @@ public class Employee extends Entity_ {
 	private String project;
 	private String fare;
 	private String commentarySection;
-	//health insurance
+	// health insurance
 	private boolean healthInsurance;
 	private boolean companyFinancing;
 	private boolean extensible;
@@ -72,10 +71,7 @@ public class Employee extends Entity_ {
 	private String[] insuranceRelativeName;
 	private String[] insuranceRelativeBirthDate;
 
-	//
-
 	public Employee() {
-		// empty constructor
 	}
 
 	public String getName() {

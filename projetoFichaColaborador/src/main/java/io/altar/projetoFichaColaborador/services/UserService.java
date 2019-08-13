@@ -30,7 +30,7 @@ public class UserService {
 	@Path("isOk")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String healthCheck() {
-		return "URI " + context.getRequestUri().toString() + " is OK!";
+		return "URI " + context.getRequestUri().toString() + " Users is OK!";
 	}
 
 	@GET
@@ -45,18 +45,19 @@ public class UserService {
 	public Response getAllUsers() {
 		return uB.getAllUsers();
 	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void createUser(User user) {
+		uB.createUser(user);
+	}
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateUser(User user) {
 		return uB.updateUser(user);
-	}
-
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void createUser(User user) {
-		uB.createUser(user);
 	}
 
 	@DELETE
@@ -66,6 +67,4 @@ public class UserService {
 		return uB.removeUser(id);
 	}
 	
-	
-
 }

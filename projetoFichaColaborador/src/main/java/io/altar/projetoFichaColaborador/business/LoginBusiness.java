@@ -27,7 +27,6 @@ public class LoginBusiness {
 	public Response getUserLogin(Credentials userCredentials) {
 
 		boolean valid = uR.countCredentialsExistsByEntity(userCredentials);
-		System.out.println(valid);
 		if (valid) {
 			User logedUser = uR.getUserFromCredentials(userCredentials);
 			setCurrentUser(logedUser);

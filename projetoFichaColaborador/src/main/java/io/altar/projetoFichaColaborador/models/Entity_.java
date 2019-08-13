@@ -2,9 +2,7 @@ package io.altar.projetoFichaColaborador.models;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.LocalDateTime;
 
-import javax.enterprise.inject.Instance;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,5 +41,4 @@ public class Entity_ implements Serializable {
 	public void setModified(long modified) {
 		this.modified = modified;
 	}
-
 }

@@ -46,18 +46,19 @@ public class EmployeeServices {
 	public Response getAllEmployees() {
 		return eB.getAllEmployees();
 	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void createEmployee(Employee employee) {
+		eB.createEmployee(employee);
+	}
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateEmployee(Employee employee) {
 		return eB.updateEmployee(employee);
-	}
-
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void createEmployee(Employee employee) {
-		eB.createEmployee(employee);
 	}
 
 	@DELETE
@@ -73,5 +74,4 @@ public class EmployeeServices {
 	public Response getFilterEmployees(Filters filter) {
 		return eB.filterEmployeesValidation(filter);
 	}
-
 }

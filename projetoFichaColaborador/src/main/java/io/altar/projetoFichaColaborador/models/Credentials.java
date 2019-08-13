@@ -11,7 +11,6 @@ public class Credentials implements Serializable {
 	private String role;
 
 	public Credentials() {
-	
 	}
 
 	public String getUsername() {

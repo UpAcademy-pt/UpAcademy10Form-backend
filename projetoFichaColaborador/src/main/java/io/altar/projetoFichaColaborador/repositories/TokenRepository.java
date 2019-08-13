@@ -53,17 +53,19 @@ protected Class<Token> getEntityClass() {
     return Token.class;
 }
 
+//
+
 @Override
 protected String getAllQuery() {
-    // TODO Auto-generated method stub
     return null;
 }
-
 @Override
 protected String getByIdQuery() {
-	// TODO Auto-generated method stub
 	return null;
-
+}
+@Override
+protected String checkEntityExistsByIdQuery() {
+	return null;
 }
 }
 
