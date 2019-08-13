@@ -11,7 +11,7 @@ import io.altar.projetoFichaColaborador.models.Filters;
 
 @RequestScoped
 public class EmployeeRepository extends EntityRepository<Employee> {
-	
+
 	@Inject
 	private EntityRepository<Employee> eR;
 
@@ -19,7 +19,7 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 	protected Class<Employee> getEntityClass() {
 		return Employee.class;
 	}
-	
+
 	@Override
 	protected String getByIdQuery() {
 		return Employee.GET_EMPLOYEE_BY_ID;
@@ -36,13 +36,14 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 	}
 
 	public boolean checkEmployeeExistsByEntity(Employee employee) {
-		return eR.checkEntityExistsById(employee.getId());
+		return checkEntityExistsById(employee.getId());
 	}
-	
+
 	public List<Employee> filterEmployees(Filters filter) {
-		
-		//enviar 20 de cada vez e dizer quantos e que ja la tao e qual o total de resultados
-		
+
+		// enviar 20 de cada vez e dizer quantos e que ja la tao e qual o total de
+		// resultados
+
 		boolean previousQueryEntry = false;
 		boolean queryEntryAdmissionDates = false;
 		boolean queryEntryTech = false;
@@ -71,17 +72,34 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 				queryInputs += " e.district =:district";
 			}
 		}
+
+		TypedQuery<Employee> maxResultsInQuery = em.createQuery("SELECT COUNT(e) FROM Employee e WHERE" + queryInputs,
+				Employee.class);
 		TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE" + queryInputs, Employee.class);
+
 		if (queryEntryAdmissionDates) {
 			query.setParameter("admissionDateMIN", filter.getAdmissionDateMIN());
 			query.setParameter("admissionDateMAX", filter.getAdmissionDateMAX());
+			maxResultsInQuery.setParameter("admissionDateMIN", filter.getAdmissionDateMIN());
+			maxResultsInQuery.setParameter("admissionDateMIN", filter.getAdmissionDateMAX());
 		}
 		if (queryEntryTech) {
 			query.setParameter("specialTech", filter.getSpecialTech());
+			maxResultsInQuery.setParameter("specialTech", filter.getSpecialTech());
 		}
 		if (queryEntryDistrict) {
 			query.setParameter("district", filter.getDistrict());
+			maxResultsInQuery.setParameter("specialTech", filter.getSpecialTech());
 		}
+		
+		maxResultsInQuery.getSingleResult();
+		query.setMaxResults(10);
+		
+		if (filter.getMaxResultsInQuery() == 0) {
+			query.setFirstResult(0);
+		}
+	
 		return query.getResultList();
+
 	}
 }

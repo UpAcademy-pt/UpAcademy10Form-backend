@@ -14,8 +14,6 @@ public class UserRepository extends EntityRepository<User> {
 	
 	@Inject
 	private LoginBusiness lB;
-	@Inject
-	private EntityRepository<User> eR;
 
 	@Override
 	protected Class<User> getEntityClass() {
@@ -42,7 +40,7 @@ public class UserRepository extends EntityRepository<User> {
 	}
 	
 	public boolean checkUserExistsByEntity(User user) {
-		return eR.checkEntityExistsById(user.getId());
+		return checkEntityExistsById(user.getId());
 	}
 	
 	public boolean countCredentialsExistsByEntity(Credentials userCredentials) {
@@ -63,8 +61,7 @@ public class UserRepository extends EntityRepository<User> {
 	
 	public void initDb() {
 		String hashedPassword = lB.hashPassword("superadmin");
-		Query query = em.createNativeQuery(
-				"INSERT INTO User (username, password, role) VALUES ('superadmin', :hashedPassword, 'owner')");
+		Query query = em.createNativeQuery("INSERT INTO User (created, modified, username, password, role) VALUES ('1565618095165', '1565618095165', 'superadmin', :hashedPassword, 'owner')");
 		query.setParameter("hashedPassword", hashedPassword);
 		query.executeUpdate();
 	}

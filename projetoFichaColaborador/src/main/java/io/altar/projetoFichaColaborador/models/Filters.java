@@ -9,12 +9,14 @@ public class Filters implements Serializable {
 	private Long admissionDateMAX;
 	private String specialTech;
 	private String district;
+	private int maxResultsInQuery;
 
-	public Filters(long admissionDateMIN, long admissionDateMAX, String specialTech, String district) {
+	public Filters(long admissionDateMIN, long admissionDateMAX, String specialTech, String district, int maxResultsInQuery) {
 		this.admissionDateMIN = admissionDateMIN;
 		this.admissionDateMAX = admissionDateMAX;
 		this.specialTech = specialTech;
 		this.district = district;
+		this.maxResultsInQuery = maxResultsInQuery;
 	}
 
 	public Filters() {
@@ -50,5 +52,13 @@ public class Filters implements Serializable {
 
 	public void setDistrict(String district) {
 		this.district = district;
+	}
+
+	public int getMaxResultsInQuery() {
+		return maxResultsInQuery;
+	}
+
+	public void setMaxResultsInQuery(int maxResultsInQuery) {
+		this.maxResultsInQuery = maxResultsInQuery;
 	}
 }
