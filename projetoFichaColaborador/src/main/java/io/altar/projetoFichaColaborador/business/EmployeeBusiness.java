@@ -60,16 +60,14 @@ public class EmployeeBusiness {
 	}
 
 	public Response filterEmployeesValidation(Filters filter) {
-		
-		long countFilteredEmployeesList = emR.countFilterEmployees(filter);
-
+		long countFilteredEmployeesList = filter.getCountResults();
+		if (!filter.getNextPage()) {
+			countFilteredEmployeesList = emR.countFilterEmployees(filter);
+		}
 		List<Employee> filteredEmployeesList = emR.filterEmployees(filter);
 		
+		MultiReturn<Employee> mR = new MultiReturn<Employee>(filteredEmployeesList, countFilteredEmployeesList);
 		
-		MultiReturn<Employee> mR = new MultiReturn(filteredEmployeesList, countFilteredEmployeesList);
-
-
-
 		if (filteredEmployeesList.isEmpty()) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Não há resultados que correspondam à sua pesquisa").build();

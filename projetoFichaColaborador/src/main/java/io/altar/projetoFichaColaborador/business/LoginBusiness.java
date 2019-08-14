@@ -14,22 +14,14 @@ public class LoginBusiness {
 	@Inject
 	private UserRepository uR;
 
-	private User currentUser;
-
-	public User getCurrentUser() {
-		return currentUser;
-	}
-
-	public void setCurrentUser(User currentUser) {
-		this.currentUser = currentUser;
-	}
+	public User currentUser;
 
 	public Response getUserLogin(Credentials userCredentials) {
 
 		boolean valid = uR.countCredentialsExistsByEntity(userCredentials);
 		if (valid) {
 			User logedUser = uR.getUserFromCredentials(userCredentials);
-			setCurrentUser(logedUser);
+			currentUser = logedUser;
 			userCredentials.setId(logedUser.getId());
 			userCredentials.setRole(logedUser.getRole());
 			userCredentials.setPassword("");

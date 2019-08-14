@@ -75,6 +75,9 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		if (queryEntryDistrict) {
 			query.setParameter("district", filter.getDistrict());
 		}
+		
+		query.setFirstResult(filter.getStartPage());
+		query.setMaxResults(10);
 		return query.getResultList();
 	}
 

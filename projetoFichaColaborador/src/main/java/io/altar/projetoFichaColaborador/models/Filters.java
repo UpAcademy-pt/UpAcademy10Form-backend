@@ -9,6 +9,9 @@ public class Filters implements Serializable {
 	private Long admissionDateMAX;
 	private String specialTech;
 	private String district;
+	private boolean nextPage;
+	private long countResults;
+	private int startPage;
 
 
 	public Filters(long admissionDateMIN, long admissionDateMAX, String specialTech, String district, int maxResultsInQuery) {
@@ -52,5 +55,29 @@ public class Filters implements Serializable {
 
 	public void setDistrict(String district) {
 		this.district = district;
+	}
+
+	public boolean getNextPage() {
+		return nextPage;
+	}
+
+	public void setNextPage(boolean nextPage) {
+		this.nextPage = nextPage;
+	}
+
+	public long getCountResults() {
+		return countResults;
+	}
+
+	public void setCountResults(long countResults) {
+		this.countResults = countResults;
+	}
+
+	public int getStartPage() {
+		return startPage;
+	}
+
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
 	}
 }

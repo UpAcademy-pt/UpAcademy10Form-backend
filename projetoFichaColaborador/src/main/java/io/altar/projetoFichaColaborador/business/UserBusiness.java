@@ -20,10 +20,11 @@ public class UserBusiness {
 	public void createUser(User user) {
 		user.setPassword(lB.hashPassword(user.getPassword()));
 		uR.create(user);
+	}public UserBusiness() {
+		// TODO Auto-generated constructor stub
 	}
-
 	public Response updateUser(User user) {
-		User userTry = lB.getCurrentUser();
+		User userTry = lB.currentUser;
 
 //		User userTry = new User();
 //		userTry.setId(2);
