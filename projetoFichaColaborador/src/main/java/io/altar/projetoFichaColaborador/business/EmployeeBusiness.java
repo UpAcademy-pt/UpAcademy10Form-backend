@@ -10,11 +10,13 @@ import javax.ws.rs.core.Response;
 import io.altar.projetoFichaColaborador.models.Employee;
 import io.altar.projetoFichaColaborador.models.Filters;
 import io.altar.projetoFichaColaborador.repositories.EmployeeRepository;
+import io.altar.projetoFichaColaborador.utils.MultiReturn;
 
 public class EmployeeBusiness {
 
 	@Inject
 	private EmployeeRepository emR;
+
 
 	public void createEmployee(Employee employee) {
 		emR.create(employee);
@@ -58,7 +60,14 @@ public class EmployeeBusiness {
 	}
 
 	public Response filterEmployeesValidation(Filters filter) {
-		List<Employee> filteredEmployeesList = emR.filterEmployees(filter);
+		
+		long countFilteredEmployeesList = emR.countFilterEmployees(filter);
+		List<Employee> filteredEmployeesList = emR.filterEmployees(filter, countFilteredEmployeesList);
+		
+		MultiReturn<Employee> mR = new MultiReturn(filteredEmployeesList, countFilteredEmployeesList);
+
+
+
 		if (filteredEmployeesList.isEmpty()) {
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Não há resultados que correspondam à sua pesquisa").build();

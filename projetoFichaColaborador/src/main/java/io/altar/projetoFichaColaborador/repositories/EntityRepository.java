@@ -20,7 +20,7 @@ public abstract class EntityRepository<T extends Entity_> {
 	protected abstract String getAllQuery();
 
 	protected abstract String getByIdQuery();
-	
+
 	protected abstract String checkEntityExistsByIdQuery();
 
 	public T create(T entity) {
@@ -50,10 +50,12 @@ public abstract class EntityRepository<T extends Entity_> {
 		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
 		return query.getResultList();
 	}
-	
+
 	public boolean checkEntityExistsById(long id) {
-		TypedQuery<Long> query = em.createQuery(checkEntityExistsByIdQuery(), Long.class);
+		System.out.println(id);
+		TypedQuery<Long> query = em.createNamedQuery(checkEntityExistsByIdQuery(), Long.class);
 		query.setParameter("entityId", id);
-		return query.getSingleResult().longValue() > 0;
+		return query.getSingleResult() > 0;
+	
 	}
 }

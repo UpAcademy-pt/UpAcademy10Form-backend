@@ -3,7 +3,6 @@ package io.altar.projetoFichaColaborador.repositories;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 
 import io.altar.projetoFichaColaborador.models.Employee;
@@ -11,9 +10,6 @@ import io.altar.projetoFichaColaborador.models.Filters;
 
 @RequestScoped
 public class EmployeeRepository extends EntityRepository<Employee> {
-
-	@Inject
-	private EntityRepository<Employee> eR;
 
 	@Override
 	protected Class<Employee> getEntityClass() {
@@ -39,11 +35,7 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		return checkEntityExistsById(employee.getId());
 	}
 
-	public List<Employee> filterEmployees(Filters filter) {
-
-		// enviar 20 de cada vez e dizer quantos e que ja la tao e qual o total de
-		// resultados
-
+	public List<Employee> filterEmployees(Filters filter, long count) {
 		boolean previousQueryEntry = false;
 		boolean queryEntryAdmissionDates = false;
 		boolean queryEntryTech = false;
@@ -72,34 +64,63 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 				queryInputs += " e.district =:district";
 			}
 		}
-
-		TypedQuery<Employee> maxResultsInQuery = em.createQuery("SELECT COUNT(e) FROM Employee e WHERE" + queryInputs,
-				Employee.class);
 		TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE" + queryInputs, Employee.class);
-
 		if (queryEntryAdmissionDates) {
 			query.setParameter("admissionDateMIN", filter.getAdmissionDateMIN());
 			query.setParameter("admissionDateMAX", filter.getAdmissionDateMAX());
-			maxResultsInQuery.setParameter("admissionDateMIN", filter.getAdmissionDateMIN());
-			maxResultsInQuery.setParameter("admissionDateMIN", filter.getAdmissionDateMAX());
 		}
 		if (queryEntryTech) {
 			query.setParameter("specialTech", filter.getSpecialTech());
-			maxResultsInQuery.setParameter("specialTech", filter.getSpecialTech());
 		}
 		if (queryEntryDistrict) {
 			query.setParameter("district", filter.getDistrict());
+		}
+		return query.getResultList();
+	}
+
+	public long countFilterEmployees(Filters filter) {
+		boolean previousQueryEntry = false;
+		boolean queryEntryAdmissionDates = false;
+		boolean queryEntryTech = false;
+		boolean queryEntryDistrict = false;
+		String queryInputs = "";
+
+		if (filter.getAdmissionDateMIN() != null) {
+			queryEntryAdmissionDates = true;
+			queryInputs = " e.admissionDate >=:admissionDateMIN AND e.admissionDate <=:admissionDateMAX";
+			previousQueryEntry = true;
+		}
+		if (filter.getSpecialTech() != null) {
+			queryEntryTech = true;
+			if (previousQueryEntry) {
+				queryInputs += " AND e.specialTech =:specialTech";
+				previousQueryEntry = true;
+			} else {
+				queryInputs += " e.specialTech =:specialTech";
+				previousQueryEntry = true;
+			}
+		}
+		if (filter.getDistrict() != null) {
+			queryEntryDistrict = true;
+			if (previousQueryEntry) {
+				queryInputs += " AND e.district =:district";
+			} else {
+				queryInputs += " e.district =:district";
+			}
+		}
+		TypedQuery<Long> maxResultsInQuery = em.createQuery("SELECT COUNT(e) FROM Employee e WHERE" + queryInputs,
+				Long.class);
+		if (queryEntryAdmissionDates) {
+			maxResultsInQuery.setParameter("admissionDateMIN", filter.getAdmissionDateMIN());
+			maxResultsInQuery.setParameter("admissionDateMAX", filter.getAdmissionDateMAX());
+		}
+		if (queryEntryTech) {
 			maxResultsInQuery.setParameter("specialTech", filter.getSpecialTech());
 		}
-		
-		maxResultsInQuery.getSingleResult();
-		query.setMaxResults(10);
-		
-		if (filter.getMaxResultsInQuery() == 0) {
-			query.setFirstResult(0);
+		if (queryEntryDistrict) {
+			maxResultsInQuery.setParameter("district", filter.getSpecialTech());
 		}
-	
-		return query.getResultList();
-
+		return maxResultsInQuery.getSingleResult();
 	}
+	
 }
