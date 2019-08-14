@@ -62,7 +62,9 @@ public class EmployeeBusiness {
 	public Response filterEmployeesValidation(Filters filter) {
 		
 		long countFilteredEmployeesList = emR.countFilterEmployees(filter);
-		List<Employee> filteredEmployeesList = emR.filterEmployees(filter, countFilteredEmployeesList);
+
+		List<Employee> filteredEmployeesList = emR.filterEmployees(filter);
+		
 		
 		MultiReturn<Employee> mR = new MultiReturn(filteredEmployeesList, countFilteredEmployeesList);
 
@@ -72,6 +74,6 @@ public class EmployeeBusiness {
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Não há resultados que correspondam à sua pesquisa").build();
 		}
-		return Response.ok(filteredEmployeesList, MediaType.APPLICATION_JSON).build();
+		return Response.ok(mR, MediaType.APPLICATION_JSON).build();
 	}
 }

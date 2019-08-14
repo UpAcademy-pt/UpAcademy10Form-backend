@@ -35,7 +35,7 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		return checkEntityExistsById(employee.getId());
 	}
 
-	public List<Employee> filterEmployees(Filters filter, long count) {
+	public List<Employee> filterEmployees(Filters filter) {
 		boolean previousQueryEntry = false;
 		boolean queryEntryAdmissionDates = false;
 		boolean queryEntryTech = false;
@@ -84,7 +84,7 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		boolean queryEntryTech = false;
 		boolean queryEntryDistrict = false;
 		String queryInputs = "";
-
+		
 		if (filter.getAdmissionDateMIN() != null) {
 			queryEntryAdmissionDates = true;
 			queryInputs = " e.admissionDate >=:admissionDateMIN AND e.admissionDate <=:admissionDateMAX";
@@ -93,7 +93,7 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		if (filter.getSpecialTech() != null) {
 			queryEntryTech = true;
 			if (previousQueryEntry) {
-				queryInputs += " AND e.specialTech =:specialTech";
+				queryInputs += " OR e.specialTech =:specialTech";
 				previousQueryEntry = true;
 			} else {
 				queryInputs += " e.specialTech =:specialTech";
@@ -103,13 +103,15 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		if (filter.getDistrict() != null) {
 			queryEntryDistrict = true;
 			if (previousQueryEntry) {
-				queryInputs += " AND e.district =:district";
+				queryInputs += " OR e.district =:district";
 			} else {
 				queryInputs += " e.district =:district";
 			}
 		}
+		
 		TypedQuery<Long> maxResultsInQuery = em.createQuery("SELECT COUNT(e) FROM Employee e WHERE" + queryInputs,
 				Long.class);
+		
 		if (queryEntryAdmissionDates) {
 			maxResultsInQuery.setParameter("admissionDateMIN", filter.getAdmissionDateMIN());
 			maxResultsInQuery.setParameter("admissionDateMAX", filter.getAdmissionDateMAX());
@@ -120,6 +122,7 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		if (queryEntryDistrict) {
 			maxResultsInQuery.setParameter("district", filter.getSpecialTech());
 		}
+		System.out.println(maxResultsInQuery.getSingleResult());
 		return maxResultsInQuery.getSingleResult();
 	}
 	
