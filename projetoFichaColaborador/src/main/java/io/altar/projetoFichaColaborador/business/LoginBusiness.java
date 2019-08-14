@@ -14,7 +14,7 @@ public class LoginBusiness {
 	@Inject
 	private UserRepository uR;
 
-	public User currentUser;
+	public static User currentUser;
 
 	public Response getUserLogin(Credentials userCredentials) {
 
