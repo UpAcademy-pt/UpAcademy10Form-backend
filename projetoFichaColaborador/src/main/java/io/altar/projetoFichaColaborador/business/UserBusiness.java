@@ -8,13 +8,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.altar.projetoFichaColaborador.models.User;
-import io.altar.projetoFichaColaborador.repositories.EntityRepository;
 import io.altar.projetoFichaColaborador.repositories.UserRepository;
 
 public class UserBusiness {
-
-	@Inject
-	private EntityRepository<User> eR;
 
 	@Inject
 	private UserRepository uR;
@@ -22,88 +18,76 @@ public class UserBusiness {
 	private LoginBusiness lB;
 
 	public void createUser(User user) {
-
-		System.out.println(user.getPassword());
-
 		user.setPassword(lB.hashPassword(user.getPassword()));
+		uR.create(user);
+	}
 
-		eR.create(user);
+	public UserBusiness() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public Response updateUser(User user) {
-		User userTry = lB.getCurrentUser();
-		if (userTry.getRole() == "owner") {
-			if (user.getId() == userTry.getId()) {
-				if (user.getUsername() != userTry.getUsername() || user.getRole() != userTry.getRole()) {
-					return Response.status(Response.Status.FORBIDDEN).entity("Nao pode alterar estes dados").build();
-				} else {
-					String hashedPassword = lB.hashPassword(user.getPassword());
-					user.setPassword(hashedPassword);
-					user.setModified(Instant.now());
-					eR.update(user);
-					return Response.status(Response.Status.OK).entity(user).build();
-				}
-			}
-		} else if (user.getId() != userTry.getId()) {
-			return Response.status(Response.Status.FORBIDDEN).entity("Nao tem permissao para fazer essas alteracoes")
-					.build();
-		} else {
-			if (user.getUsername() != userTry.getUsername() || user.getRole() != userTry.getRole()) {
-				return Response.status(Response.Status.FORBIDDEN)
-						.entity("Nao tem permissao para fazer essas alteracoes").build();
-			} else {
-				String hashedPassword = lB.hashPassword(user.getPassword());
-				user.setPassword(hashedPassword);
-				user.setModified(Instant.now());
-				eR.update(user);
-				return Response.status(Response.Status.OK).entity(user).build();
-			}
+
+//		User userTry = new User();
+//		userTry.setId(2);
+//		userTry.setRole("admin");
+//		userTry.setUsername("admin");
+//		userTry.setPassword("superadmin");
+//		System.out.println(userTry.getUsername());
+//		System.out.println(userTry.getPassword());
+//		System.out.println(userTry.getRole());
+//		System.out.println("_________------------------__________");
+//		System.out.println(user.getUsername());
+//		System.out.println(user.getPassword());
+//		System.out.println(user.getRole());
+		boolean valid = uR.checkUserExistsByEntity(user);
+		if (valid) {
+			user.setModified(Instant.now().toEpochMilli());
+			updateExecutionSetHashPassSetModifiedInstant(user);
+			return Response.ok(user, MediaType.APPLICATION_JSON).build();
 		}
-		return null;
+		return Response.status(Response.Status.NOT_FOUND).entity("2-Nao pode alterar estes dados").build();
+	}
+
+	private void updateExecutionSetHashPassSetModifiedInstant(User user) {
+		String hashedPassword = lB.hashPassword(user.getPassword());
+		user.setPassword(hashedPassword);
+		user.setModified(Instant.now().toEpochMilli());
+		uR.update(user);
+	}
+
+	public Response removeUser(long id) {
+		boolean valid = uR.checkEntityExistsById(id);
+		if (valid) {
+			User userToRemove = uR.getEntityById(id);
+			if (userToRemove.getRole() == "owner") {
+				return Response.status(Response.Status.NOT_FOUND)
+						.entity("Nao tem permissao para eliminar este utilizador").build();
+			}
+			uR.remove(id);
+			return Response.ok(userToRemove, MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(Response.Status.NOT_FOUND).entity("O utilizador que esta a tentar apagar nao existe")
+				.build();
 	}
 
 	public Response getUserById(long id) {
-		boolean valid = uR.countUserExistsById(id);
+		boolean valid = uR.checkEntityExistsById(id);
 		if (valid) {
-			User user = eR.getEntityById(id);
+			User user = uR.getEntityById(id);
 			return Response.ok(user, MediaType.APPLICATION_JSON).build();
 		} else {
-			return Response.status(Response.Status.NO_CONTENT).entity("Esse utilizador nao existe").build();
+			return Response.status(Response.Status.NOT_FOUND).entity("Esse utilizador nao existe").build();
 		}
 	}
 
 	public Response getAllUsers() {
-		List<User> tempAllUsers = eR.getAll();
-
-		if (tempAllUsers != null) {
-			return Response.accepted().entity(tempAllUsers).build();
+		List<User> tempAllUsers = uR.getAll();
+		if (tempAllUsers.isEmpty()) {
+			return Response.status(Response.Status.NOT_FOUND).entity("Nao existem utilizadores criados").build();
 		} else {
-			return Response.status(Response.Status.NO_CONTENT).build();
+			return Response.ok(tempAllUsers, MediaType.APPLICATION_JSON).build();
 		}
-	}
-
-	public Response removeUser(long id) {
-		User user = lB.getCurrentUser();
-		boolean valid = uR.countUserExistsById(id);
-		if (valid) {
-	
-			User userToRemove = eR.getEntityById(id);
-			if (user.getRole() != "owner") {
-				return Response.status(Response.Status.FORBIDDEN)
-						.entity("Nao tem permissao para eliminar este utilizador").build();
-
-			} else if (user.getId() == userToRemove.getId()) {
-				return Response.status(Response.Status.FORBIDDEN)
-						.entity("Nao tem permissao para eliminar este utilizador").build();
-			} else {
-				eR.remove(id);
-				return Response.status(Response.Status.OK).entity(user).build();
-			}
-		} else {
-			return Response.status(Response.Status.FORBIDDEN).entity("O utilizador que esta a tentar apagar nao existe")
-					.build();
-		}
-
 	}
 
 }

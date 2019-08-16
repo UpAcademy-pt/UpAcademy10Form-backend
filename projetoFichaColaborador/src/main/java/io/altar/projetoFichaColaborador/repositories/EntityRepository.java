@@ -1,6 +1,5 @@
 package io.altar.projetoFichaColaborador.repositories;
 
-import java.time.Instant;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -22,8 +21,9 @@ public abstract class EntityRepository<T extends Entity_> {
 
 	protected abstract String getByIdQuery();
 
+	protected abstract String checkEntityExistsByIdQuery();
+
 	public T create(T entity) {
-		entity.setCreated(Instant.now());
 		return em.merge(entity);
 	}
 
@@ -49,5 +49,13 @@ public abstract class EntityRepository<T extends Entity_> {
 	public List<T> getAll() {
 		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
 		return query.getResultList();
+	}
+
+	public boolean checkEntityExistsById(long id) {
+		System.out.println(id);
+		TypedQuery<Long> query = em.createNamedQuery(checkEntityExistsByIdQuery(), Long.class);
+		query.setParameter("entityId", id);
+		return query.getSingleResult() > 0;
+	
 	}
 }

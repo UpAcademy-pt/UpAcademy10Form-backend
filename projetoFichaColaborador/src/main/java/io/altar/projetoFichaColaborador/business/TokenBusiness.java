@@ -24,7 +24,7 @@ private static final SecureRandom secureRandom = new SecureRandom(); // threadsa
 private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder(); // threadsafe
 
 public Token generateNewToken(String email) throws IOException {
-    byte[] randomBytes = new byte[16];
+    byte[] randomBytes = new byte[32];
     secureRandom.nextBytes(randomBytes);
     String value = base64Encoder.encodeToString(randomBytes);
     String employeeEmail = email;

@@ -30,12 +30,12 @@ public class UserService {
 	@Path("isOk")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String healthCheck() {
-		return "URI " + context.getRequestUri().toString() + " is OK!";
+		return "URI " + context.getRequestUri().toString() + " Users is OK!";
 	}
 
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserById(@PathParam("id") long id) {
 		return uB.getUserById(id);
 	}
@@ -45,25 +45,26 @@ public class UserService {
 	public Response getAllUsers() {
 		return uB.getAllUsers();
 	}
-
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response updateUser(User user) {
-		return uB.updateUser(user);
-	}
-
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public void createUser(User user) {
 		uB.createUser(user);
 	}
 
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateUser(User user) {
+		return uB.updateUser(user);
+	}
+
 	@DELETE
 	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeUser(@PathParam("id") long id) {
 		return uB.removeUser(id);
 	}
-
+	
 }

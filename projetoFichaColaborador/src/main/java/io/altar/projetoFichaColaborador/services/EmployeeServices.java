@@ -16,8 +16,9 @@ import javax.ws.rs.core.UriInfo;
 
 import io.altar.projetoFichaColaborador.business.EmployeeBusiness;
 import io.altar.projetoFichaColaborador.models.Employee;
+import io.altar.projetoFichaColaborador.models.Filters;
 
-@Path("employee")
+@Path("employees")
 public class EmployeeServices {
 
 	@Context
@@ -46,26 +47,31 @@ public class EmployeeServices {
 		return eB.getAllEmployees();
 	}
 	
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response updateEmployee(Employee employee) {
-		return eB.updateEmployee(employee);
-	}
-
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public void createEmployee(Employee employee) {
 		eB.createEmployee(employee);
 	}
 
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateEmployee(Employee employee) {
+		return eB.updateEmployee(employee);
+	}
+
 	@DELETE
 	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeEmployee(@PathParam("id") long id) {
 		return eB.removeEmployee(id);
 	}
-	
 
-	
+	@POST
+	@Path("filter")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFilterEmployees(Filters filter) {
+		return eB.filterEmployeesValidation(filter);
+	}
 }

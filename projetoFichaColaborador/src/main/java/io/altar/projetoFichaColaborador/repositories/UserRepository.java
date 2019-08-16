@@ -1,7 +1,5 @@
 package io.altar.projetoFichaColaborador.repositories;
 
-import java.util.List;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.Query;
@@ -13,12 +11,18 @@ import io.altar.projetoFichaColaborador.models.User;
 
 @RequestScoped
 public class UserRepository extends EntityRepository<User> {
-@Inject
+	
+	@Inject
 	private LoginBusiness lB;
 
 	@Override
 	protected Class<User> getEntityClass() {
 		return User.class;
+	}
+	
+	@Override
+	protected String getByIdQuery() {
+		return User.GET_USER_BY_ID;
 	}
 
 	@Override
@@ -31,59 +35,34 @@ public class UserRepository extends EntityRepository<User> {
 	}
 
 	@Override
-	protected String getByIdQuery() {
-		return User.GET_USER_BY_ID;
+	protected String checkEntityExistsByIdQuery() {
+		return User.CHECK_USER_EXISTS_BY_ID;
+	}
+	
+	public boolean checkUserExistsByEntity(User user) {
+		return checkEntityExistsById(user.getId());
+	}
+	
+	public boolean countCredentialsExistsByEntity(Credentials userCredentials) {
+		TypedQuery<Long> query = em.createQuery(
+				"SELECT COUNT(u) FROM User u WHERE u.username =:userName AND u.password=:passWord)", Long.class);
+		query.setParameter("userName", userCredentials.getUsername());
+		query.setParameter("passWord", lB.hashPassword(userCredentials.getPassword()));
+		return query.getSingleResult().longValue() > 0;
 	}
 
 	public User getUserFromCredentials(Credentials userCredentials) {
 		userCredentials.setPassword(lB.hashPassword(userCredentials.getPassword()));
-		System.out.println(userCredentials.getPassword());
 		TypedQuery<User> query = em.createNamedQuery(getUserLoginQuery(), User.class);
 		query.setParameter("username", userCredentials.getUsername());
 		query.setParameter("password", userCredentials.getPassword());
 		return query.getSingleResult();
 	}
-
+	
 	public void initDb() {
 		String hashedPassword = lB.hashPassword("superadmin");
-		Query query = em.createNativeQuery("INSERT INTO User (username, password, role) VALUES ('superadmin', :hashedPassword, 'owner')");
+		Query query = em.createNativeQuery("INSERT INTO User (created, modified, username, password, role) VALUES ('1565618095165', '1565618095165', 'superadmin', :hashedPassword, 'owner')");
 		query.setParameter("hashedPassword", hashedPassword);
 		query.executeUpdate();
 	}
-	
-	public boolean countCredentialsExistsByEntity(Credentials userCredentials) {
-		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.username =:userName AND u.password=:passWord)");
-		query.setParameter("userName", userCredentials.getUsername());
-		query.setParameter("passWord", lB.hashPassword(userCredentials.getPassword()));
-		List<?> valid = query.getResultList();
-		if (valid.isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
-	public boolean countUserExistsByEntity(User user) {
-		long id = user.getId();
-		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.id =:userId)");
-		query.setParameter("userId", id);
-		List<?> valid = query.getResultList();
-		if (valid.isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
-	public boolean countUserExistsById(long id) {
-		Query query = em.createQuery("SELECT u FROM User u" + " WHERE EXISTS (SELECT u FROM User u WHERE u.id =:userId)");
-		query.setParameter("userId", id);
-		List<?> valid = query.getResultList();
-		if (valid.isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
 }
-

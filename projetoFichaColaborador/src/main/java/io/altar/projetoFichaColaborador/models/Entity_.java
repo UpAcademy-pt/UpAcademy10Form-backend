@@ -9,15 +9,15 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class Entity_ implements Serializable{
+public class Entity_ implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected long id;
-	private Instant created;
-	private Instant modified;
-	
+	private long created = Instant.now().toEpochMilli();
+	private long modified;
+
 	public long getId() {
 		return this.id;
 	}
@@ -26,21 +26,19 @@ public class Entity_ implements Serializable{
 		this.id = id;
 	}
 
-	public Instant getCreated() {
+	public long getCreated() {
 		return created;
 	}
 
-	public void setCreated(Instant created) {
+	public void setCreated(long created) {
 		this.created = created;
 	}
 
-	public Instant getModified() {
+	public long getModified() {
 		return modified;
 	}
 
-	public void setModified(Instant modified) {
-		this.modified = Instant.now();
+	public void setModified(long modified) {
+		this.modified = modified;
 	}
-
 }
-
