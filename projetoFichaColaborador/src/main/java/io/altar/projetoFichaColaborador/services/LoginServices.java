@@ -3,7 +3,6 @@ package io.altar.projetoFichaColaborador.services;
 import javax.inject.Inject;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -17,7 +16,7 @@ import io.altar.projetoFichaColaborador.models.Credentials;
 
 @Path("login")
 public class LoginServices {
-	
+
 	@Context
 	private UriInfo context;
 
@@ -30,11 +29,5 @@ public class LoginServices {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserLogin(Credentials userCredential) {
 		return lB.getUserLogin(userCredential);
-	}
-
-	@GET
-	@Path("initDb")
-	public void createSuperAdminEndPoint() {
-		lB.createSuperAdmin();
 	}
 }

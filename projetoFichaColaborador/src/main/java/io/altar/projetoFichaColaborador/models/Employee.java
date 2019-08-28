@@ -1,14 +1,19 @@
 package io.altar.projetoFichaColaborador.models;
 
 import java.util.ArrayList;
-
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import io.altar.projetoFichaColaborador.utils.Insurance;
 
 @Entity
-@NamedQueries({ @NamedQuery(name = "GET_ALL_EMPLOYEES", query = "SELECT e FROM Employee e"),
-		@NamedQuery(name = "GET_EMPLOYEE_BY_ID", query = "SELECT e FROM Employee e WHERE e.id =:entityId"),
+@NamedQueries({
+		@NamedQuery(name = "GET_ALL_EMPLOYEES", query = "SELECT DISTINCT e FROM Employee e LEFT JOIN FETCH e.insuranceDetails"),
+		@NamedQuery(name = "GET_EMPLOYEE_BY_ID", query = "SELECT DISTINCT e FROM Employee e LEFT JOIN FETCH e.insuranceDetails WHERE e.id =:entityId"),
 		@NamedQuery(name = "CHECK_EMPLOYEE_EXISTS_BY_ID", query = "SELECT COUNT(e) FROM Employee e WHERE e.id =:entityId") })
 
 public class Employee extends Entity_ {
@@ -24,7 +29,7 @@ public class Employee extends Entity_ {
 	private String location;
 	private String district;
 	private String email;
-	private int phoneNumber;
+	private String phoneNumber;
 	private String academicQualifications;
 	private String academicInstitution;
 	private String course;
@@ -36,7 +41,8 @@ public class Employee extends Entity_ {
 	private String niss;
 	private String maritalStatus;
 	private boolean maritalWorkStatus;
-	private int dependents;
+	private boolean dependents;
+	private int dependentsNumber;
 	private int[] dependentsAges = new int[5];
 	private String iban;
 	private String swift;
@@ -46,11 +52,9 @@ public class Employee extends Entity_ {
 	private long admissionDate;
 	private float grossSalary;
 	private String contractType;
-	private String bonus;
+	private ArrayList<String> bonus;
 	private boolean twelfths;
-	private boolean twelfths5050;
-	private boolean twelfths112;
-	private boolean foodAllowance;
+	private String twelfthsType;
 	private String workSchedule = "9h-18h";
 	private boolean sports;
 	private String sportsType;
@@ -63,13 +67,13 @@ public class Employee extends Entity_ {
 	private String project;
 	private String fare;
 	private String commentarySection;
-	// health insurance
 	private boolean healthInsurance;
 	private boolean companyFinancing;
 	private boolean extensible;
-	private boolean companyFinancingRelative;
-	private String[] insuranceRelativeName;
-	private String[] insuranceRelativeBirthDate;
+	private int companyFinancingRelative;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn
+	private List<Insurance> insuranceDetails;
 
 	public Employee() {
 	}
@@ -114,11 +118,11 @@ public class Employee extends Entity_ {
 		this.email = email;
 	}
 
-	public int getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -186,7 +190,7 @@ public class Employee extends Entity_ {
 		this.maritalStatus = maritalStatus;
 	}
 
-	public boolean isMaritalWorkStatus() {
+	public boolean getMaritalWorkStatus() {
 		return maritalWorkStatus;
 	}
 
@@ -194,11 +198,11 @@ public class Employee extends Entity_ {
 		this.maritalWorkStatus = maritalWorkStatus;
 	}
 
-	public int getDependents() {
+	public boolean getDependents() {
 		return dependents;
 	}
 
-	public void setDependents(int dependents) {
+	public void setDependents(boolean dependents) {
 		this.dependents = dependents;
 	}
 
@@ -258,44 +262,20 @@ public class Employee extends Entity_ {
 		this.contractType = contractType;
 	}
 
-	public String getExtras() {
+	public ArrayList<String> getBonus() {
 		return bonus;
 	}
 
-	public void setExtras(String extras) {
-		this.bonus = extras;
+	public void setBonus(ArrayList<String> bonus) {
+		this.bonus = bonus;
 	}
 
-	public boolean isTwelfths() {
+	public boolean getTwelfths() {
 		return twelfths;
 	}
 
 	public void setTwelfths(boolean twelfths) {
 		this.twelfths = twelfths;
-	}
-
-	public boolean isTwelfths5050() {
-		return twelfths5050;
-	}
-
-	public void setTwelfths5050(boolean twelfths5050) {
-		this.twelfths5050 = twelfths5050;
-	}
-
-	public boolean isTwelfths112() {
-		return twelfths112;
-	}
-
-	public void setTwelfths112(boolean twelfths112) {
-		this.twelfths112 = twelfths112;
-	}
-
-	public boolean isFoodAllowance() {
-		return foodAllowance;
-	}
-
-	public void setFoodAllowance(boolean foodAllowance) {
-		this.foodAllowance = foodAllowance;
 	}
 
 	public String getWorkSchedule() {
@@ -306,7 +286,7 @@ public class Employee extends Entity_ {
 		this.workSchedule = workTine;
 	}
 
-	public boolean isSports() {
+	public boolean getSports() {
 		return sports;
 	}
 
@@ -434,22 +414,6 @@ public class Employee extends Entity_ {
 		this.commentarySection = commentarySection;
 	}
 
-	public String[] getInsuranceRelativeName() {
-		return insuranceRelativeName;
-	}
-
-	public void setInsuranceRelativeName(String[] insuranceRelativeName) {
-		this.insuranceRelativeName = insuranceRelativeName;
-	}
-
-	public String[] getInsuranceRelativeBirthDate() {
-		return insuranceRelativeBirthDate;
-	}
-
-	public void setInsuranceRelativeBirthDate(String[] insuranceRelativeBirthDate) {
-		this.insuranceRelativeBirthDate = insuranceRelativeBirthDate;
-	}
-
 	public boolean getCompanyFinancing() {
 		return companyFinancing;
 	}
@@ -466,11 +430,11 @@ public class Employee extends Entity_ {
 		this.extensible = extensible;
 	}
 
-	public boolean getCompanyFinancingRelative() {
+	public int getCompanyFinancingRelative() {
 		return companyFinancingRelative;
 	}
 
-	public void setCompanyFinancingRelative(boolean companyFinancingRelative) {
+	public void setCompanyFinancingRelative(int companyFinancingRelative) {
 		this.companyFinancingRelative = companyFinancingRelative;
 	}
 
@@ -480,6 +444,30 @@ public class Employee extends Entity_ {
 
 	public void setDistrict(String district) {
 		this.district = district;
+	}
+
+	public String getTwelfthsType() {
+		return twelfthsType;
+	}
+
+	public void setTwelfthsType(String twelfthsType) {
+		this.twelfthsType = twelfthsType;
+	}
+
+	public int getDependentsNumber() {
+		return dependentsNumber;
+	}
+
+	public void setDependentsNumber(int dependentsNumber) {
+		this.dependentsNumber = dependentsNumber;
+	}
+
+	public List<Insurance> getInsuranceDetails() {
+		return insuranceDetails;
+	}
+
+	public void setInsuranceDetails(List<Insurance> insuranceDetails) {
+		this.insuranceDetails = insuranceDetails;
 	}
 
 }

@@ -11,15 +11,15 @@ public class MultiReturn<T> {
 		this.object = object;
 		this.filterSize = filterSize;
 	}
-	
+
 	public void setObject(List<T> object) {
 		this.object = object;
 	}
-	
+
 	public void setFilterSize(long filterSize) {
 		this.filterSize = filterSize;
 	}
-	
+
 	public long getFilterSize() {
 		return filterSize;
 	}

@@ -1,0 +1,1 @@
+INSERT INTO myUser (created, modified, username, password, role) VALUES ('1565618095165', '1565618095165', 'superadmin', '-1716778828', 'owner');

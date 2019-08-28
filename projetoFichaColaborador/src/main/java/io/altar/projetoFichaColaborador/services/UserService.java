@@ -45,7 +45,7 @@ public class UserService {
 	public Response getAllUsers() {
 		return uB.getAllUsers();
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -64,7 +64,8 @@ public class UserService {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeUser(@PathParam("id") long id) {
+		System.out.println(id);
 		return uB.removeUser(id);
 	}
-	
+
 }

@@ -2,13 +2,11 @@ package io.altar.projetoFichaColaborador.repositories;
 
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
 import javax.persistence.TypedQuery;
 
 import io.altar.projetoFichaColaborador.models.Employee;
 import io.altar.projetoFichaColaborador.models.Filters;
 
-@RequestScoped
 public class EmployeeRepository extends EntityRepository<Employee> {
 
 	@Override
@@ -40,10 +38,13 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		boolean queryEntryAdmissionDates = false;
 		boolean queryEntryTech = false;
 		boolean queryEntryDistrict = false;
+		boolean queryEntryClient = false;
+		boolean queryEntryProfessionalCategory = false;
 		String queryInputs = "";
+
 		if (filter.getAdmissionDateMIN() != null) {
 			queryEntryAdmissionDates = true;
-			queryInputs = " e.admissionDate >=:admissionDateMIN AND e.admissionDate <=:admissionDateMAX";
+			queryInputs += " e.admissionDate >=:admissionDateMIN AND e.admissionDate <=:admissionDateMAX";
 			previousQueryEntry = true;
 		}
 		if (filter.getSpecialTech() != null) {
@@ -62,9 +63,30 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 				queryInputs += " AND e.district =:district";
 			} else {
 				queryInputs += " e.district =:district";
+				previousQueryEntry = true;
 			}
 		}
-		TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e WHERE" + queryInputs, Employee.class);
+		if (filter.getProfessionalCategory() != null) {
+			queryEntryProfessionalCategory = true;
+			if (previousQueryEntry) {
+				queryInputs += " AND e.professionalCategory =:professionalCategory";
+			} else {
+				queryInputs += " e.professionalCategory =:professionalCategory";
+				previousQueryEntry = true;
+			}
+		}
+		if (filter.getClient() != null) {
+			queryEntryClient = true;
+			if (previousQueryEntry) {
+				queryInputs += " AND e.client =:client";
+			} else {
+				queryInputs += " e.client =:client";
+			}
+		}
+		TypedQuery<Employee> query = em.createQuery(
+				"SELECT DISTINCT e FROM Employee e LEFT JOIN FETCH e.insuranceDetails WHERE" + queryInputs,
+				Employee.class);
+
 		if (queryEntryAdmissionDates) {
 			query.setParameter("admissionDateMIN", filter.getAdmissionDateMIN());
 			query.setParameter("admissionDateMAX", filter.getAdmissionDateMAX());
@@ -75,9 +97,13 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		if (queryEntryDistrict) {
 			query.setParameter("district", filter.getDistrict());
 		}
-		
-		query.setFirstResult(filter.getStartPage());
-		query.setMaxResults(10);
+		if (queryEntryProfessionalCategory) {
+			query.setParameter("professionalCategory", filter.getProfessionalCategory());
+		}
+		if (queryEntryClient) {
+			query.setParameter("client", filter.getClient());
+		}
+
 		return query.getResultList();
 	}
 
@@ -86,17 +112,19 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		boolean queryEntryAdmissionDates = false;
 		boolean queryEntryTech = false;
 		boolean queryEntryDistrict = false;
-		String queryInputs = "";
-		
+		boolean queryEntryClient = false;
+		boolean queryEntryProfessionalCategory = false;
+		String queryInputs = " WHERE";
+
 		if (filter.getAdmissionDateMIN() != null) {
 			queryEntryAdmissionDates = true;
-			queryInputs = " e.admissionDate >=:admissionDateMIN AND e.admissionDate <=:admissionDateMAX";
+			queryInputs += " e.admissionDate >=:admissionDateMIN AND e.admissionDate <=:admissionDateMAX";
 			previousQueryEntry = true;
 		}
 		if (filter.getSpecialTech() != null) {
 			queryEntryTech = true;
 			if (previousQueryEntry) {
-				queryInputs += " OR e.specialTech =:specialTech";
+				queryInputs += " AND e.specialTech =:specialTech";
 				previousQueryEntry = true;
 			} else {
 				queryInputs += " e.specialTech =:specialTech";
@@ -106,15 +134,36 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		if (filter.getDistrict() != null) {
 			queryEntryDistrict = true;
 			if (previousQueryEntry) {
-				queryInputs += " OR e.district =:district";
+				queryInputs += " AND e.district =:district";
 			} else {
 				queryInputs += " e.district =:district";
+				previousQueryEntry = true;
 			}
 		}
-		
-		TypedQuery<Long> maxResultsInQuery = em.createQuery("SELECT COUNT(e) FROM Employee e WHERE" + queryInputs,
+		if (filter.getProfessionalCategory() != null) {
+			queryEntryProfessionalCategory = true;
+			if (previousQueryEntry) {
+				queryInputs += " AND e.professionalCategory =:professionalCategory";
+			} else {
+				queryInputs += " e.professionalCategory =:professionalCategory";
+				previousQueryEntry = true;
+			}
+		}
+		if (filter.getClient() != null) {
+			queryEntryClient = true;
+			if (previousQueryEntry) {
+				queryInputs += " AND e.client =:client";
+			} else {
+				queryInputs += " e.client =:client";
+				previousQueryEntry = true;
+			}
+		}
+		if (previousQueryEntry == false) {
+			queryInputs = "";
+		}
+		TypedQuery<Long> maxResultsInQuery = em.createQuery("SELECT COUNT(e) FROM Employee e" + queryInputs,
 				Long.class);
-		
+
 		if (queryEntryAdmissionDates) {
 			maxResultsInQuery.setParameter("admissionDateMIN", filter.getAdmissionDateMIN());
 			maxResultsInQuery.setParameter("admissionDateMAX", filter.getAdmissionDateMAX());
@@ -123,10 +172,14 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 			maxResultsInQuery.setParameter("specialTech", filter.getSpecialTech());
 		}
 		if (queryEntryDistrict) {
-			maxResultsInQuery.setParameter("district", filter.getSpecialTech());
+			maxResultsInQuery.setParameter("district", filter.getDistrict());
 		}
-		System.out.println(maxResultsInQuery.getSingleResult());
+		if (queryEntryProfessionalCategory) {
+			maxResultsInQuery.setParameter("professionalCategory", filter.getProfessionalCategory());
+		}
+		if (queryEntryClient) {
+			maxResultsInQuery.setParameter("client", filter.getClient());
+		}
 		return maxResultsInQuery.getSingleResult();
 	}
-	
 }

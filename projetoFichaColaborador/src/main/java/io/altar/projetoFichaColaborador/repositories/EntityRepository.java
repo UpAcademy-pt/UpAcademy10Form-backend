@@ -1,15 +1,14 @@
 package io.altar.projetoFichaColaborador.repositories;
 
+import java.time.Instant;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
 import io.altar.projetoFichaColaborador.models.Entity_;
 
-@Transactional
 public abstract class EntityRepository<T extends Entity_> {
 
 	@PersistenceContext(unitName = "database")
@@ -28,6 +27,7 @@ public abstract class EntityRepository<T extends Entity_> {
 	}
 
 	public void update(T entity) {
+		entity.setModified(Instant.now().toEpochMilli());
 		em.merge(entity);
 	}
 
@@ -45,17 +45,16 @@ public abstract class EntityRepository<T extends Entity_> {
 		query.setParameter("entityId", id);
 		return query.getSingleResult();
 	}
-
+	
 	public List<T> getAll() {
 		TypedQuery<T> query = em.createNamedQuery(getAllQuery(), getEntityClass());
 		return query.getResultList();
 	}
 
 	public boolean checkEntityExistsById(long id) {
-		System.out.println(id);
 		TypedQuery<Long> query = em.createNamedQuery(checkEntityExistsByIdQuery(), Long.class);
 		query.setParameter("entityId", id);
 		return query.getSingleResult() > 0;
-	
+
 	}
 }

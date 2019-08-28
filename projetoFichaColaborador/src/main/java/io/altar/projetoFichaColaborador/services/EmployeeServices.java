@@ -46,7 +46,7 @@ public class EmployeeServices {
 	public Response getAllEmployees() {
 		return eB.getAllEmployees();
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -63,13 +63,13 @@ public class EmployeeServices {
 
 	@DELETE
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeEmployee(@PathParam("id") long id) {
 		return eB.removeEmployee(id);
 	}
 
 	@POST
 	@Path("filter")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getFilterEmployees(Filters filter) {
 		return eB.filterEmployeesValidation(filter);

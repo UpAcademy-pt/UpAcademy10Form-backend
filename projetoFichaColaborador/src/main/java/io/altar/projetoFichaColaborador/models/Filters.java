@@ -9,12 +9,16 @@ public class Filters implements Serializable {
 	private Long admissionDateMAX;
 	private String specialTech;
 	private String district;
+	private String client;
+	private String professionalCategory;
+
+	private boolean previousPage;
 	private boolean nextPage;
 	private long countResults;
 	private int startPage;
 
-
-	public Filters(long admissionDateMIN, long admissionDateMAX, String specialTech, String district, int maxResultsInQuery) {
+	public Filters(long admissionDateMIN, long admissionDateMAX, String specialTech, String district,
+			int maxResultsInQuery) {
 		this.admissionDateMIN = admissionDateMIN;
 		this.admissionDateMAX = admissionDateMAX;
 		this.specialTech = specialTech;
@@ -79,5 +83,29 @@ public class Filters implements Serializable {
 
 	public void setStartPage(int startPage) {
 		this.startPage = startPage;
+	}
+
+	public boolean getPreviousPage() {
+		return previousPage;
+	}
+
+	public void setPreviousPage(boolean previousPage) {
+		this.previousPage = previousPage;
+	}
+
+	public String getClient() {
+		return client;
+	}
+
+	public void setClient(String client) {
+		this.client = client;
+	}
+
+	public String getProfessionalCategory() {
+		return professionalCategory;
+	}
+
+	public void setProfessionalCategory(String professionalCategorie) {
+		this.professionalCategory = professionalCategorie;
 	}
 }

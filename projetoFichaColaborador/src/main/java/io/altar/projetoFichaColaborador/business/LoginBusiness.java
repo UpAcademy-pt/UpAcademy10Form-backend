@@ -17,9 +17,7 @@ public class LoginBusiness {
 	public static User currentUser;
 
 	public Response getUserLogin(Credentials userCredentials) {
-
-		boolean valid = uR.countCredentialsExistsByEntity(userCredentials);
-		if (valid) {
+		if (uR.countCredentialsExistsByEntity(userCredentials)) {
 			User logedUser = uR.getUserFromCredentials(userCredentials);
 			currentUser = logedUser;
 			userCredentials.setId(logedUser.getId());
@@ -30,15 +28,4 @@ public class LoginBusiness {
 			return Response.status(Status.UNAUTHORIZED).entity("Username e/ou Password incorrectos").build();
 		}
 	}
-
-	public String hashPassword(String TextPassword) {
-		Integer hash = TextPassword.hashCode();
-		String hashedPass = hash.toString();
-		return hashedPass;
-	}
-
-	public void createSuperAdmin() {
-		uR.initDb();
-	}
-
 }
