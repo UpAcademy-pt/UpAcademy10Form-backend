@@ -55,6 +55,5 @@ public abstract class EntityRepository<T extends Entity_> {
 		TypedQuery<Long> query = em.createNamedQuery(checkEntityExistsByIdQuery(), Long.class);
 		query.setParameter("entityId", id);
 		return query.getSingleResult() > 0;
-
 	}
 }

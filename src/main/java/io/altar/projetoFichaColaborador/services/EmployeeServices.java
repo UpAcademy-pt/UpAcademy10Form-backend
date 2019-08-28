@@ -74,4 +74,17 @@ public class EmployeeServices {
 	public Response getFilterEmployees(Filters filter) {
 		return eB.filterEmployeesValidation(filter);
 	}
+	@GET
+	@Path("statisticProfessionalCategory")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFilterEmployeesProfessionalCategory() {
+		return eB.statisticProfessionalCategory();
+	}
+	
+	@GET
+	@Path("statisticSpecialTech")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFilterEmployeesSpecialTech() {
+		return eB.statisticSpecialTech();
+	}
 }

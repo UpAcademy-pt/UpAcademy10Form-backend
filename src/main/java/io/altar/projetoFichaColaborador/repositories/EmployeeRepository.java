@@ -2,6 +2,7 @@ package io.altar.projetoFichaColaborador.repositories;
 
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import io.altar.projetoFichaColaborador.models.Employee;
@@ -161,6 +162,7 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 		if (previousQueryEntry == false) {
 			queryInputs = "";
 		}
+
 		TypedQuery<Long> maxResultsInQuery = em.createQuery("SELECT COUNT(e) FROM Employee e" + queryInputs,
 				Long.class);
 
@@ -181,5 +183,15 @@ public class EmployeeRepository extends EntityRepository<Employee> {
 			maxResultsInQuery.setParameter("client", filter.getClient());
 		}
 		return maxResultsInQuery.getSingleResult();
+	}
+	
+	public List<Object> statisticProfessionalCategoryQuery(){
+		Query query = em.createQuery("SELECT COUNT(e.id), e.professionalCategory FROM Employee e GROUP BY e.professionalCategory");
+		return query.getResultList();
+	
+	}
+	public List<Object> statisticSpecialTechQuery(){
+		Query query = em.createQuery("SELECT COUNT(e.id), e.specialTech FROM Employee e GROUP BY e.specialTech");
+		return query.getResultList();
 	}
 }

@@ -74,4 +74,12 @@ public class EmployeeBusiness {
 		}
 		return Response.ok(mR, MediaType.APPLICATION_JSON).build();
 	}
+
+	public Response statisticSpecialTech(){
+		return Response.ok(emR.statisticSpecialTechQuery(), MediaType.APPLICATION_JSON).build();
+	}
+	
+	public Response statisticProfessionalCategory(){
+		return Response.ok(emR.statisticProfessionalCategoryQuery(), MediaType.APPLICATION_JSON).build();
+	}
 }
